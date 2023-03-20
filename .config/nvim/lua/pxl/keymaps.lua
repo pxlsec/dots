@@ -1,4 +1,5 @@
 -- Shorten function name
+local telescope = require('telescope.builtin')
 local keymap = vim.keymap.set
 -- Silent keymap option
 local opts = { silent = true }
@@ -26,3 +27,5 @@ keymap("n", "<C-e>", "<C-w>j", opts)
 keymap("n", "<C-i>", "<C-w>k", opts)
 keymap("n", "<C-o>", "<C-w>l", opts)
 
+keymap("n", "<leader>ff", telescope.find_files, opts)
+keymap("n", "<leader>fg", telescope.live_grep, opts)

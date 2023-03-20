@@ -1,4 +1,4 @@
-local M = {
+return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
   event = "BufReadPost",
@@ -12,7 +12,7 @@ local M = {
   config = function()
     -- local settings = require("core.settings")
     require("nvim-treesitter.configs").setup({
-      -- ensure_installed = settings.treesitter_ensure_installed,
+      ensure_installed = { "c", "lua", "rust" },
       ignore_install = {}, -- List of parsers to ignore installing
       highlight = {
         enable = true, -- false will disable the whole extension
@@ -54,9 +54,7 @@ local M = {
         },
       },
     })
-
+    require 'nvim-treesitter.install'.compilers = { "clang" }
     --require("nvim-ts-autotag").setup()
   end,
 }
-
-return M
