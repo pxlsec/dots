@@ -2,6 +2,9 @@
 local opt = vim.opt
 local g = vim.g
 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1  
+
 opt.nu = true
 opt.relativenumber = true
 
@@ -9,6 +12,9 @@ opt.tabstop = 2
 opt.softtabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
+
+opt.splitbelow = true
+opt.splitright = true
 
 opt.smartindent = true
 
@@ -29,6 +35,10 @@ opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 
 opt.updatetime = 50
+
+vim.cmd[[colorscheme tokyonight-night]]
+--opt.colorscheme = "one"
+g.airline_theme = 'tokyonight-night'
 
 -- Colors and themes
 vim.api.nvim_set_hl(0, 'EndOfBuffer', {bg=NONE, fg=NONE})

@@ -7,7 +7,7 @@ return {
       defaults = {
         -- Default configuration for telescope goes here:
         -- config_key = value,
-        layout_strategy = 'vertical',
+        layout_strategy = 'horizontal',
         layout_config = { height = 0.6, width = 0.5 },
         mappings = {
           i = {
