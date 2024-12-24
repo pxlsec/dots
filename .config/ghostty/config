@@ -1,9 +1,3 @@
-# The syntax is "key = value". The whitespace around the equals doesn't matter.
-background = 121212
-foreground= CAD3F5
-
-background-opacity = 0.8
-
 # Comments start with a `#` and are only valid on their own line.
 # Blank lines are ignored!
 
@@ -15,32 +9,16 @@ keybind = ctrl+d=new_split:right
 font-family = FiraCode Nerd Font
 font-size = 10
 
-# Colors can be changed by setting the 16 colors of `palette`, which each color
-# being defined as regular and bold.
-#
-# black
-palette = 0=#494D64
-palette = 8=#5B6078
-# red
-palette = 1=#ED8796
-palette = 9=#ED8796
-# green
-palette = 2=#A6DA95
-palette = 10=#A6DA95
-# yellow
-palette = 3=#EED49F
-palette = 11=#EED49F
-# blue
-palette = 4=#8AADF4
-palette = 12=#8AADF4
-# purple
-palette = 5=#F5BDE6
-palette = 13=#F5BDE6
-# aqua
-palette = 6=#8BD5CA
-palette = 14=#8BD5CA
-# white
-palette = 7=#B8C0E0
-palette = 15=#A5ADCB
+# Valid values are:
+# 
+#   * `block`
+#   * `bar`
+#   * `underline`
+#   * `block_hollow`
+cursor-style = bar
+
+theme = xcad
+
+background-opacity = 0.8
 
 window-decoration = false

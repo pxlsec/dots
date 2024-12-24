@@ -1,0 +1,34 @@
+# Christian Lempa's xcad theme
+background = 1A1A1A
+foreground = F1F1F1
+
+cursor-color=#FFFFFF
+selection-background=#FFFFFF
+
+# Colors can be changed by setting the 16 colors of `palette`, which each color
+# being defined as regular and bold.
+#
+# black
+palette = 0=#121212
+palette = 8=#666666
+# red
+palette = 1=#A52AFF
+palette = 9=#BA5AFF
+# green
+palette = 2=#7129FF
+palette = 10=#905AFF
+# yellow
+palette = 3=#3D2AFF
+palette = 11=#685AFF
+# blue
+palette = 4=#2B4FFF
+palette = 12=#5C78FF
+# purple
+palette = 5=#2883FF
+palette = 13=#5EA2FF
+# aqua
+palette = 6=#28B9FF
+palette = 14=#5AC8FF
+# white
+palette = 7=#F1F1F1
+palette = 15=#FFFFFF
