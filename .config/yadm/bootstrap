@@ -21,7 +21,7 @@ heartbeat() {
   fi
 
   # Make sure sudo is installed on the system
-  which sudo > /dev/null
+  command -v sudo > /dev/null
   if [ $? -ne 0 ]; then
     error "The script requires sudo to be installed"
     exit
@@ -68,13 +68,13 @@ heartbeat() {
 
 # Install required software
 requirements() {
-  which git > /dev/null
+  command -v git > /dev/null
   if [ $? -ne 0 ]; then
     sudo pacman -S --noconfirm git
   fi
 
   PARU="https://aur.archlinux.org/paru.git"
-  which paru > /dev/null
+  command -v paru > /dev/null
   if [ $? -ne 0 ]; then
     git clone ${PARU} /tmp/paru
     cd /tmp/paru
@@ -97,7 +97,7 @@ post() {
   info "Changing system settings"
 
   echo 'export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}"/zsh' | sudo tee -a /etc/zsh/zshenv # Change zsh config to XDG_CONFIG_HOME
-  sudo chsh -s $(which zsh) $USER # Change default shell to zsh
+  sudo chsh -s $(command -v zsh) $USER # Change default shell to zsh
 }
 
 header "Setting up sudo permissions"
