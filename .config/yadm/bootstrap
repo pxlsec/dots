@@ -1,0 +1,110 @@
+#! /bin/sh
+
+header() {
+    printf '\E[1;4;95m'; echo "$@"; printf '\E[0m';
+}
+
+info() {
+    printf '\E[96m'; echo "$@"; printf '\E[0m';
+}
+
+error () {
+    printf '\E[1;31m'; echo "$@"; printf '\E[0m';
+}
+
+# Make sure the user is sudo and non-root
+heartbeat() {
+  # Deny root from running the script
+  if [ "$(id -u)" -eq 0 ]; then 
+    error "Do not run this script as root!"
+    exit
+  fi
+
+  # Get sudo access
+  local PROMPT
+  PROMPT=$(sudo -nv 2>&1)
+
+  if [ $? -eq 0 ]; then
+    # User has sudo
+    info "Continuing with sudo privlages..."
+  elif echo $PROMPT | grep -q '^sudo:'; then
+    # User requires password
+    info "Password required to change system settings..."
+    sudo -v
+    if [[ $? -eq 1 ]]; then
+      error "Failed to authenticate!"
+      exit 1
+    fi
+  else
+    # User not in sudoers file
+    info "User not in sudoers?"
+    exit 1
+  fi
+
+
+  # Keeps sudo alive for the duration of the script
+  info "starting heartbeat"
+  while true; do
+    echo "heartbeat: $$"
+    sudo -nv
+    if [ $? -ne 0 ]; then
+      error "The heart has failed"
+      exit
+    fi
+    sleep 5
+  done &
+  local HEART=$!
+
+  trap "exit" INT TERM
+  trap "kill $HEART; echo 'Stopped heartbeat: ${HEART}'; exit" EXIT
+}
+
+# Install required software
+requirements() {
+  which git
+  if [ $? -ne 0 ]; then
+    sudo pacman -S --noconfirm git
+  fi
+
+  PARU="https://aur.archlinux.org/paru.git"
+  which paru
+  if [ $? -ne 0 ]; then
+    git clone ${PARU} /tmp/paru
+    cd /tmp/paru
+    makepkg -si --noconfirm
+    cd -
+  fi
+}
+
+packages() {
+  # Packages to install
+  local PKGS
+  PKGS="zsh zoxide starship ttf-firacode-nerd zellij tmux neovim zk fzf fd ripgrep " # Terminal apps
+  PKGS+="hyprland hyprpaper waybar wofi dunst ghostty zen-browser-bin spotify discord " # Desktop enviroment
+  PKGS+="steam-native-runtime osu-lazer-bin vkbasalt reshade-shaders-git mangohud" # Games and company
+
+  paru -S $PKGS
+}
+
+post() {
+  info "Changing system settings"
+
+  echo 'export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}"/zsh' | sudo tee -a /etc/zsh/zshenv # Change zsh config to XDG_CONFIG_HOME
+  sudo chsh -s $(which zsh) $USER # Change default shell to zsh
+}
+
+header "Setting up sudo permissions"
+heartbeat
+sleep 10
+
+# Check requirements
+header "Checking for required packages"
+requirements
+
+# Install optional packages
+header "Installing optional packages"
+packages
+
+# Change system settings
+header "Changing some system settings"
+post 

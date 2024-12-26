@@ -1,6 +1,6 @@
 # XDG Directories
-ZSH_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}"/zsh/
-ZSH_STATE="${XDG_STATE_HOME:-$HOME/.local/state}"/zsh/
+ZSH_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}"/zsh
+ZSH_STATE="${XDG_STATE_HOME:-$HOME/.local/state}"/zsh
 
 if [[ ! -d "$ZSH_CACHE" ]]; then
   mkdir -p "$ZSH_CACHE"
@@ -8,20 +8,6 @@ fi
 
 if [[ ! -d "$ZSH_STATE" ]]; then
   mkdir -p "$ZSH_STATE"
-fi
-
-#compinit -d "$ZSH_CACHE"/zcompdump-"$ZSH_VERSION"
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  # If you're using macOS, you'll want this enabled
-  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Set the directory we want to store zinit and plugins
@@ -35,9 +21,6 @@ fi
 
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
-
-# Add in Powerlevel10k
-zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
@@ -55,12 +38,10 @@ zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 
 # Load completions
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+compinit -d "$ZSH_CACHE"/zcompdump-"$ZSH_VERSION"
 
 zinit cdreplay -q
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
 
 # Keybindings
 bindkey -e
@@ -89,10 +70,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
-alias ls='ls --color'
-alias vim='nvim'
-alias c='clear'
-
 alias "ls"="lsd"
 alias "ll"="lsd -la"
 alias "nv"="nvim"
@@ -103,8 +80,11 @@ alias "o"="xdg-open"
 alias "ssh"="kitten ssh"
 
 # Shell integrations
+if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
+    source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
+fi
 eval "$(fzf --zsh)"
-#eval "$(starship init zsh)"
+eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 #eval "$(zellij setup --generate-completion zsh)"
 
@@ -112,4 +92,4 @@ export "EDITOR"="nvim"
 export "PAGER"="most"
 export "ZK_NOTEBOOK_DIR"="/home/skye/Documents/zettelkasten"
 
-#fastfetch
+fastfetch
