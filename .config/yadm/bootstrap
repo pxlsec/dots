@@ -20,6 +20,13 @@ heartbeat() {
     exit
   fi
 
+  # Make sure sudo is installed on the system
+  which sudo > /dev/null
+  if [ $? -ne 0 ]; then
+    error "The script requires sudo to be installed"
+    exit
+  fi
+
   # Get sudo access
   local PROMPT
   PROMPT=$(sudo -nv 2>&1)
@@ -61,13 +68,13 @@ heartbeat() {
 
 # Install required software
 requirements() {
-  which git
+  which git > /dev/null
   if [ $? -ne 0 ]; then
     sudo pacman -S --noconfirm git
   fi
 
   PARU="https://aur.archlinux.org/paru.git"
-  which paru
+  which paru > /dev/null
   if [ $? -ne 0 ]; then
     git clone ${PARU} /tmp/paru
     cd /tmp/paru
