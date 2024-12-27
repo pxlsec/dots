@@ -1,0 +1,15 @@
+prompt=
+hide_scroll=true
+show=drun
+width=35%
+lines=10
+columns=1
+line_wrap=off
+allow_images=true
+image_size=22
+insensitive=true
+matching=contains
+filter-rate=10
+
+dynamic-lines=false
+content-halign=start
