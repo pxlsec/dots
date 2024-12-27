@@ -22,3 +22,4 @@ theme = xcad
 background-opacity = 0.8
 
 window-decoration = false
+confirm-close-surface = false
