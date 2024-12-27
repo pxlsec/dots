@@ -76,9 +76,6 @@ alias "o"="xdg-open"
 alias "ssh"="kitten ssh"
 
 # Shell integrations
-if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
-    source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
-fi
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
