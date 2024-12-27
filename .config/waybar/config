@@ -1,0 +1,177 @@
+{
+    "position": "top",
+    "margin": "3, 5",
+    "modules-left": ["custom/launcher", "hyprland/workspaces", "wireplumber",],
+    "modules-center": ["mpris",],
+    "modules-right": ["backlight", "upower/controller", "upower/headset", "battery", "clock", "tray", "group/power",],
+
+// modules
+
+// first section
+    "custom/launcher": {
+        "format":"",
+        "on-click": "exec wofi -c ~/.config/wofi/config -I",
+        "tooltip": false,
+    },
+
+    "hyprland/workspaces": {
+    	"all-outputs": true,
+    	"format": "{icon}",
+        "format-icons": {
+            "1": "일",
+            "2": "이",
+            "3": "삼",
+            "4": "사",
+            "5": "오",
+            "6": "육",
+            "7": "칠",
+            "8": "팔",
+            "9": "구",
+            "10": "십",
+        }
+    },
+
+    "wireplumber": {    
+      "format": "{volume}% {icon}",
+      "format-muted": "",
+      "on-click": "helvum",
+      "format-icons": ["", "", ""]
+    },
+
+    "pulseaudio": {
+      // "scroll-step": 1, // %, can be a float
+      "format": "{icon} {volume}%\n{format_source}",
+      "format-bluetooth": "{icon} {volume}% {format_source}",
+      "format-bluetooth-muted": " {format_source}",
+      "format-muted": " {format_source}",
+      "format-source": " {volume}%",
+      "format-source-muted": "",
+      "rotate": 90,
+      "format-icons": {
+        "headphone": "",
+        "hands-free": "",
+        "headset": "🎧",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["", "", ""]
+
+      },
+      "on-click": "pavucontrol"
+    },
+
+// middle section
+    "mpris": {
+      	"format": "{player_icon} {dynamic}",
+	      "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "dynamic-order": ["artist", "title"],
+	      "player-icons": {
+	      	"default": "▶",
+	      	"mpv": "🎵"
+      	},
+      	"status-icons": {
+	      	"paused": "⏸"
+	      },
+       	"ignored-players": ["firefox"]
+    },
+
+// last section
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", ""]
+    },
+
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+        //"format-alt": "{time}",
+    },
+
+// Headset
+    "upower/headset": {
+        "native-path": "ps-controller-battery-58:10:31:80:ef:8d",
+        "show-icon": false,
+        "format": "󰊴 {percentage}",
+        "on-click": "dualsensectl power-off",
+        "hide-if-empty": true,
+        "tooltip": false,
+    },
+
+// PS controller
+    "upower/controller": {
+        "native-path": "ps-controller-battery-58:10:31:80:ef:8d",
+        "show-icon": false,
+        "format": "󰊴 {percentage}",
+        "on-click": "dualsensectl power-off",
+        "hide-if-empty": true,
+        "tooltip": false,
+    },
+
+"power-profiles-daemon": {
+      "format": "{icon}",
+      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+      "tooltip": true,
+      "format-icons": {
+        "default": "",
+        "performance": "",
+        "balanced": "",
+        "power-saver": ""
+      }
+    },
+
+    "clock": {
+        "format": "{:%H : %M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    },
+
+    "tray": {
+        "icon-size": 20,
+        "spacing":10,
+     },
+
+  "group/power": {
+    "orientation": "inherit",
+    "drawer": {
+        "transition-duration": 500,
+        "children-class": "more-power",
+        "transition-left-to-right": false,
+    },
+    "modules": [
+        "custom/power", // First element is the "group leader" and won't ever be hidden
+        "custom/quit",
+        "custom/lock",
+        "custom/reboot",
+    ]
+},
+"custom/quit": {
+    "format": "󰗼 ",
+    "tooltip": false,
+    "on-click": "hyprctl dispatch exit"
+},
+"custom/lock": {
+    "format": "󰍁 ",
+    "tooltip": false,
+    "on-click": "loginctl lock-session && hyprctl dispatch dpms off"
+},
+"custom/reboot": {
+    "format": "󰜉 ",
+    "tooltip": false,
+    "on-click": "reboot"
+},
+"custom/power": {
+    "format": " ",
+    "tooltip": false,
+    "on-click": "shutdown now"
+}
+
+}

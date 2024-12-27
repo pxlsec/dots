@@ -1,0 +1,120 @@
+* {
+  font-family: FiraCodeNerdFont;
+  font-size: 18px;
+  border: none;
+	border-radius: 0;
+}
+
+window#waybar {
+  font-size: 18px;
+  color: white;
+  border-radius: 8px;
+  background: transparent;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+/* First section */
+#custom-launcher {
+  /* font-size: 15px; */
+  padding-left: 10px;
+  padding-right: 16px;
+	margin-right: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+
+}
+
+#workspaces {
+	margin-right: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+}
+
+#workspaces button {
+ border-radius: 20px;
+ background-color: transparent;
+ color: @text;
+ margin: 0.2em
+}
+
+#workspaces button.empty {
+
+}
+
+#workspaces button.active {
+  color: rgb(150, 0, 215);
+}
+
+#workspaces button.urgent * {
+  color: #630330;
+}
+
+#workspaces button:hover {
+  background: transparent;
+  /* border-bottom: 1.5px solid #6272a4; */
+}
+
+#pulseaudio,
+#wireplumber {
+  padding-left: 10px;
+  padding-right: 18px;
+	margin-right: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+}
+
+/* Middle section*/
+#mpris {
+  padding-left: 10px;
+  padding-right: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+}
+
+/* Right Section */
+#battery {
+  margin-left: 10px;
+}
+
+#battery.warning.charging * {
+  color: white;
+}
+
+#battery.critical * {
+  color: #e06c75;
+}
+
+#clock {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+}
+
+#tray {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+}
+
+#power {
+  padding-left: 12px;
+  padding-right: 6px;
+  margin-left: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+}
+
+#more-power {
+  padding-left: 16px;
+  padding-right: 10px;
+  margin-left: 10px;
+	border-radius: 20px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+}
