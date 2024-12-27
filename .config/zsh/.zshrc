@@ -1,13 +1,9 @@
-# XDG Directories
-ZSH_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}"/zsh
-ZSH_STATE="${XDG_STATE_HOME:-$HOME/.local/state}"/zsh
-
-if [[ ! -d "$ZSH_CACHE" ]]; then
-  mkdir -p "$ZSH_CACHE"
+if [[ ! -d "${XDG_CACHE_HOME}"/zsh ]]; then
+  mkdir -p "${XDG_CACHE_HOME}"/zsh
 fi
 
-if [[ ! -d "$ZSH_STATE" ]]; then
-  mkdir -p "$ZSH_STATE"
+if [[ ! -d "${XDG_STATE_HOME}"/zsh ]]; then
+  mkdir -p "${XDG_STATE_HOME}"/zsh
 fi
 
 # Set the directory we want to store zinit and plugins
@@ -39,7 +35,7 @@ zinit snippet OMZP::command-not-found
 
 # Load completions
 autoload -Uz compinit
-compinit -d "$ZSH_CACHE"/zcompdump-"$ZSH_VERSION"
+compinit -d "${XDG_CACHE_HOME}"/zsh/zcompdump-"$ZSH_VERSION"
 
 zinit cdreplay -q
 
@@ -51,7 +47,7 @@ bindkey '^[w' kill-region
 
 # History
 HISTSIZE=5000
-HISTFILE="$ZSH_STATE"/history
+HISTFILE="${XDG_STATE_HOME}"/zsh/history
 SAVEHIST=$HISTSIZE
 HISTDUP=erase
 setopt appendhistory
