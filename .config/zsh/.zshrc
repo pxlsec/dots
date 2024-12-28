@@ -81,8 +81,4 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 #eval "$(zellij setup --generate-completion zsh)"
 
-export "EDITOR"="nvim"
-export "PAGER"="most"
-export "ZK_NOTEBOOK_DIR"="/home/skye/Documents/zettelkasten"
-
 fastfetch
