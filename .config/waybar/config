@@ -3,7 +3,7 @@
     "margin": "3, 5",
     "modules-left": ["custom/launcher", "hyprland/workspaces", "wireplumber",],
     "modules-center": ["mpris",],
-    "modules-right": ["backlight", "upower/controller", "upower/headset", "battery", "clock", "tray", "group/power",],
+    "modules-right": ["backlight", "upower/controller", "upower/headset", "battery", "tray", "clock",],
 
 // modules
 
@@ -31,10 +31,11 @@
         }
     },
 
-    "wireplumber": {    
-      "format": "{volume}% {icon}",
-      "format-muted": "",
+    "wireplumber": {
+      "format": "{icon}  {volume}%",
+      "format-muted": "  {volume}%",
       "on-click": "helvum",
+      "on-click-right": "pavucontrol",
       "format-icons": ["", "", ""]
     },
 
@@ -62,24 +63,23 @@
 
 // middle section
     "mpris": {
-      	"format": "{player_icon} {dynamic}",
-	      "format-paused": "{status_icon} <i>{dynamic}</i>",
+	      "format": "{status_icon} {dynamic}",
         "dynamic-order": ["artist", "title"],
-	      "player-icons": {
-	      	"default": "▶",
-	      	"mpv": "🎵"
-      	},
       	"status-icons": {
-	      	"paused": "⏸"
+          "playing": "",
+	      	"paused": "",
+          "stopped": ""
 	      },
-       	"ignored-players": ["firefox"]
+       	"ignored-players": ["firefox"],
     },
 
 // last section
     "backlight": {
         "device": "intel_backlight",
-        "format": "{percent}% {icon}",
-        "format-icons": ["", ""]
+        "format": "{icon} {percent}%",
+        "format-icons": ["", "󰃞", "󰃠"],
+        "scroll-step": 0.5,
+        "tooltip": false,
     },
 
     "battery": {
@@ -88,7 +88,7 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon} {capacity}",
+        "format": "{icon} {capacity}%",
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
         // "format-good": "", // An empty format will hide the module

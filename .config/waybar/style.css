@@ -19,8 +19,8 @@ window#waybar.hidden {
 /* First section */
 #custom-launcher {
   /* font-size: 15px; */
-  padding-left: 10px;
-  padding-right: 16px;
+  padding-left: 12px;
+  padding-right: 18px;
 	margin-right: 10px;
 	border-radius: 20px;
   background: rgba(36, 40, 59, 0.8) 7.5%;
@@ -28,6 +28,8 @@ window#waybar.hidden {
 }
 
 #workspaces {
+  padding-left: 4px;
+  padding-right: 4px;
 	margin-right: 10px;
 	border-radius: 20px;
   background: rgba(36, 40, 59, 0.8) 7.5%;
@@ -59,8 +61,8 @@ window#waybar.hidden {
 
 #pulseaudio,
 #wireplumber {
-  padding-left: 10px;
-  padding-right: 18px;
+  padding-left: 12px;
+  padding-right: 12px;
 	margin-right: 10px;
 	border-radius: 20px;
   background: rgba(36, 40, 59, 0.8) 7.5%;
@@ -68,14 +70,26 @@ window#waybar.hidden {
 
 /* Middle section*/
 #mpris {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
 	border-radius: 20px;
   background: rgba(36, 40, 59, 0.8) 7.5%;
 }
 
 /* Right Section */
+#backlight {
+	border-radius: 20px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
+  margin-left: 10px;
+}
+
 #battery {
+	border-radius: 20px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background: rgba(36, 40, 59, 0.8) 7.5%;
   margin-left: 10px;
 }
 
@@ -88,16 +102,16 @@ window#waybar.hidden {
 }
 
 #clock {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
   margin-left: 10px;
 	border-radius: 20px;
   background: rgba(36, 40, 59, 0.8) 7.5%;
 }
 
 #tray {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
   margin-left: 10px;
 	border-radius: 20px;
   background: rgba(36, 40, 59, 0.8) 7.5%;
