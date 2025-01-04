@@ -30,8 +30,10 @@ listener {
     on-resume = hyprctl dispatch dpms on
 }
 
-# suspend pc
+{% if yadm.hostname != "wyvern" %}
+suspend pc
 listener {
     timeout = 900                                 # 15min
     on-timeout = systemctl suspend                # suspend pc
 }
+{% endif %}

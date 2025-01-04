@@ -1,7 +1,14 @@
 # Monitors
-monitor=eDP-1,1920x1080@60,0x0,1
-monitor=HDMI-A-1,1920x1080@60,auto,1,mirror,eDP-1
-#monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10
+{% if yadm.hostname == "wyvern" %}
+monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10
+{% else %}
+  {% if yadm.hostname == "medusa" %}
+  monitor=eDP-1,1920x1080@60,0x0,1
+  monitor=HDMI-A-1,1920x1080@60,auto,1,mirror,eDP-1
+  {% else %}
+  monitor=,preferred,auto,1
+  {% endif %}
+{% endif %}
 
 # Default apps
 $BAR=waybar
@@ -21,20 +28,23 @@ exec-once = $WALLPAPER
 exec-once = $BAR
 exec-once = $NOTIFICATIONS
 exec-once = systemctl --user start opentabletdriver.service 
-#exec-once = systemctl --user restart headphone-filter.service
-#exec-once = systemctl --user restart microphone-filter.service
 exec-once = $MUSIC
 exec-once = $DISCORD
 exec-once = $BROWSER
+{% if yadm.hostname == "wyvern" %}
+exec-once = systemctl --user restart microphone-filter.service headphone-filter.service
+{% endif %}
 
 exec = hyprctl switchxkblayout at-translated-set-2-keyboard 1
 exec = hyprctl switchxkblayout asus-rog-claymore-gaming-keyboard 1
 
 # Some default env vars.
-#env = QT_QPA_PLATFORMTHEME,qt6ct
-
+{% if yadm.hostname == "medusa" %}
 env = LIBVA_DRIVER_NAME,iHD
 env = VDPAU_DRIVER,va_gl
+{% endif %}
+
+#env = QT_QPA_PLATFORMTHEME,qt6ct
 
 env = HYPRCURSOR_THEME,Vimix-cursors
 env = HYPRCURSOR_SIZE,32
@@ -143,5 +153,5 @@ windowrulev2 = idleinhibit focus, fullscreen:1
 source = ~/.config/hypr/keybinds.conf
 
 debug {
-  disable_logs = false    
+  disable_logs = true
 }
