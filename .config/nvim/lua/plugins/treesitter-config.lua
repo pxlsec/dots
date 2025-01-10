@@ -12,7 +12,7 @@ return {
 	config = function()
 		-- local settings = require("core.settings")
 		require("nvim-treesitter.configs").setup({
-			ensure_installed = {},
+			ensure_installed = {"cpp", "lua", "markdown"},
 			ignore_install = {}, -- List of parsers to ignore installing
 			highlight = {
 				enable = true, -- false will disable the whole extension
