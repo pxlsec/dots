@@ -1,6 +1,6 @@
 # Monitors
 {% if yadm.hostname == "wyvern" %}
-monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10
+monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10 # Note that screensharing does not work in 10 bit mode
 {% else %}
   {% if yadm.hostname == "medusa" %}
   monitor=eDP-1,1920x1080@60,0x0,1
@@ -132,13 +132,9 @@ misc {
    disable_splash_rendering = true
 }
 
-render {
-  direct_scanout = true
-}
-
 # Windowrules
 ## Zen Browser 
-windowrulev2 = workspace 2, class:(zen-beta)
+windowrulev2 = workspace 2 silent, class:(zen-beta)
 
 windowrulev2 = float, class:(zen-beta), title:(Picture-in-Picture)
 windowrulev2 = pin, class:(zen-beta), title:(Picture-in-Picture)
@@ -146,10 +142,10 @@ windowrulev2 = size 30% 30%, class:(zen-beta), title:(Picture-in-Picture)
 windowrulev2 = move 100%-w-4 100%-h-4, class:(zen-beta), title:(Picture-in-Picture)
 
 # Discord 
-windowrulev2 = workspace 5, class:(discord)
+windowrulev2 = workspace 5 silent, class:(discord)
 
 # Spotify
-windowrulev2 = workspace 5, class:(Spotify)
+windowrulev2 = workspace 5 silent, class:(Spotify)
 
 # MPV
 windowrulev2 = float, class:(mpv)
@@ -170,6 +166,11 @@ windowrulev2 = tag +games, class:(osu!)
 windowrulev2 = immediate, tag:games
 windowrulev2 = workspace 1 silent, tag:games
 windowrulev2 = idleinhibit focus, tag:games
+
+# Pop ups
+windowrulev2 = float, class:(yad)
+windowrulev2 = float, class:(zenity)
+
 
 # keybinds
 source = ~/.config/hypr/keybinds.conf
