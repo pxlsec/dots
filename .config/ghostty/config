@@ -1,11 +1,4 @@
-# Comments start with a `#` and are only valid on their own line.
-# Blank lines are ignored!
-
-keybind = ctrl+z=close_surface
-keybind = ctrl+d=new_split:right
-
-# Empty values reset the configuration to the default value
-
+# Style
 font-family = "FiraCode Nerd Font Mono"
 font-size = 11
 
@@ -23,3 +16,7 @@ background-opacity = 0.8
 
 window-decoration = false
 confirm-close-surface = false
+
+# keybinds
+# keybind = ctrl+z=close_surface
+# keybind = ctrl+d=new_split:right
