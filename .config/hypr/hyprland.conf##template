@@ -31,6 +31,7 @@ exec-once = systemctl --user start opentabletdriver.service
 exec-once = $MUSIC
 exec-once = $DISCORD
 exec-once = $BROWSER
+exec-once = steam-native -silent
 {% if yadm.hostname == "wyvern" %}
 exec-once = systemctl --user restart microphone-filter.service headphone-filter.service
 {% endif %}
@@ -139,7 +140,8 @@ windowrulev2 = workspace 2 silent, class:(zen-beta)
 windowrulev2 = float, class:(zen-beta), title:(Picture-in-Picture)
 windowrulev2 = pin, class:(zen-beta), title:(Picture-in-Picture)
 windowrulev2 = size 30% 30%, class:(zen-beta), title:(Picture-in-Picture)
-windowrulev2 = move 100%-w-4 100%-h-4, class:(zen-beta), title:(Picture-in-Picture)
+#windowrulev2 = move 100%-w-4 100%-h-4, class:(zen-beta), title:(Picture-in-Picture)
+windowrulev2 = move 69.9% 69.9%, class:(zen-beta), title:(Picture-in-Picture)
 
 # Discord 
 windowrulev2 = workspace 5 silent, class:(discord)
@@ -156,6 +158,7 @@ layerrule = blur, wofi
 
 # Steam
 windowrulev2 = workspace 1 silent, class:(steam)
+windowrulev2 = workspace 1 silent, title:(Steam) # The initial update prompt has no class.
 
 # Games
 windowrulev2 = tag +games, class:(steam_app_\d+)
