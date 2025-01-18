@@ -1,0 +1,46 @@
+context.objects = [
+    {   factory = adapter
+        args = {
+           factory.name     = support.null-audio-sink
+           node.name        = "microphone"
+           audio.format     = F32LE
+           media.class      = Audio/Source/Virtual
+           object.linger    = true
+           audio.position   = [ FL FR ]
+           monitor.channel-volumes = ture
+        }
+    },
+    {   factory = adapter
+        args = {
+           factory.name     = support.null-audio-sink
+           node.name        = "master"
+           audio.format     = F32LE
+           media.class      = Audio/Sink
+           object.linger    = true
+           audio.position   = [ FL FR ]
+           monitor.channel-volumes = true
+        }
+    },
+    {   factory = adapter
+        args = {
+           factory.name     = support.null-audio-sink
+           node.name        = "music"
+           audio.format     = F32LE
+           media.class      = Audio/Sink
+           object.linger    = true
+           audio.position   = [ FL FR ]
+           monitor.channel-volumes = ture
+        }
+    },
+    {   factory = adapter
+        args = {
+           factory.name     = support.null-audio-sink
+           node.name        = "voice"
+           audio.format     = F32LE
+           media.class      = Audio/Sink
+           object.linger    = true
+           audio.position   = [ FL FR ]
+           monitor.channel-volumes = ture
+        }
+    }
+]
