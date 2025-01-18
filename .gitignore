@@ -1,0 +1,8 @@
+# Color files
+.config/waybar/colors.css
+
+# Alt files
+.config/hypr/hyprland.conf
+.config/hypr/hypridle.conf
+.config/wireplumber/wireplumber.conf.d/60-devices.conf
+.config/pipewire/pipewire.conf.d/90-virtual-sinks.conf
