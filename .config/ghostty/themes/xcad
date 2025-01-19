@@ -1,5 +1,6 @@
 # Christian Lempa's xcad theme
-background = 1A1A1A
+#background = 1A1A1A
+background = 141414
 foreground = F1F1F1
 
 cursor-color=#FFFFFF

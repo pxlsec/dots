@@ -1,0 +1,17 @@
+[config.wallpaper]
+command = "swww"
+arguments = ["img", "--transition-type", "center"]
+set = false
+
+[templates.waybar]
+input_path = './templates/colors.css'
+output_path = '~/.config/waybar/colors.css'
+# post_hook = 'pkill -SIGUSR2 waybar'
+
+[templates.hyprland]
+input_path = './templates/hyprland-colors.conf'
+output_path = '~/.config/hypr/colors.conf'
+
+[templates.ghostty]
+input_path = './templates/ghostty-theme.conf'
+output_path = '~/.config/ghostty/themes/colors'

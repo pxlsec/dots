@@ -1,5 +1,7 @@
 # Color files
+.config/hypr/colors.conf
 .config/waybar/colors.css
+.config/ghostty/themes/colors
 
 # Alt files
 .config/hypr/hyprland.conf

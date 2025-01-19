@@ -1,17 +1,18 @@
 {
     "position": "top",
     "margin": "3, 5",
-    "modules-left": ["custom/launcher", "hyprland/workspaces", "wireplumber",],
-    "modules-center": ["mpris",],
-    "modules-right": ["backlight", "upower/controller", "upower/headset", "battery", "tray", "clock",],
-
+    "spacing": 6,
+    "modules-left": ["custom/launcher", "hyprland/workspaces", "wireplumber"],
+    "modules-center": ["mpris"],
+    "modules-right": ["backlight", "upower", "battery", "tray", "clock"],
+    "reload_style_on_change": true,
 // modules
 
 // first section
     "custom/launcher": {
-        "format":"",
-        "on-click": "exec wofi -c ~/.config/wofi/config -I",
-        "tooltip": false,
+        "format":" ",
+        "on-click": "killall wofi || wofi",
+        "tooltip": false
     },
 
     "hyprland/workspaces": {
@@ -27,7 +28,7 @@
             "7": "칠",
             "8": "팔",
             "9": "구",
-            "10": "십",
+            "10": "십"
         }
     },
 
@@ -70,7 +71,7 @@
 	      	"paused": "",
           "stopped": ""
 	      },
-       	"ignored-players": ["firefox"],
+       	"ignored-players": ["firefox"]
     },
 
 // last section
@@ -79,7 +80,7 @@
         "format": "{icon} {percent}%",
         "format-icons": ["", "󰃞", "󰃠"],
         "scroll-step": 0.5,
-        "tooltip": false,
+        "tooltip": false
     },
 
     "battery": {
@@ -97,24 +98,26 @@
         //"format-alt": "{time}",
     },
 
-// Headset
-    "upower/headset": {
-        "native-path": "ps-controller-battery-58:10:31:80:ef:8d",
-        "show-icon": false,
-        "format": "󰊴 {percentage}",
-        "on-click": "dualsensectl power-off",
-        "hide-if-empty": true,
-        "tooltip": false,
-    },
+"network": {
+    "format": "{ifname}",
+    "format-wifi": "󰖩",
+    "format-ethernet": "󰈁",
+    "format-disconnected": "󰈂", //An empty format will hide the module.
+    "tooltip-format": "{ifname} 󰊗",
+    "tooltip-format-wifi": " {ifname} | {essid} | ({signalStrength}%)",
+    "tooltip-format-ethernet": " {ifname} |  {bandwidthDownBits} |  {bandwidthUpBits}",
+    "tooltip-format-disconnected": "Disconnected",
+    "max-length": 50
+},
 
 // PS controller
-    "upower/controller": {
+    "upower": {
         "native-path": "ps-controller-battery-58:10:31:80:ef:8d",
         "show-icon": false,
         "format": "󰊴 {percentage}",
         "on-click": "dualsensectl power-off",
         "hide-if-empty": true,
-        "tooltip": false,
+        "tooltip": false
     },
 
 "power-profiles-daemon": {
@@ -129,28 +132,44 @@
       }
     },
 
-    "clock": {
-        "format": "{:%H : %M}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    },
-
     "tray": {
-        "icon-size": 20,
-        "spacing":10,
+        "icon-size": 24,
+        "spacing":10
      },
+
+     "clock": {
+    "format": " {:%H:%M}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+                "mode"          : "month",
+                "weeks-pos"     : "right",
+                "on-scroll"     : 1,
+                "format": {
+                          "months":     "<span color='#ffead3'><b>{}</b></span>",
+                          "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                          "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                          "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                          "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+                          }
+                },
+    "actions":  {
+                "on-scroll-up": "shift_up",
+                "on-scroll-down": "shift_down"
+                }
+},
 
   "group/power": {
     "orientation": "inherit",
     "drawer": {
         "transition-duration": 500,
         "children-class": "more-power",
-        "transition-left-to-right": false,
+        "transition-left-to-right": false
     },
     "modules": [
         "custom/power", // First element is the "group leader" and won't ever be hidden
         "custom/quit",
         "custom/lock",
-        "custom/reboot",
+        "custom/reboot"
     ]
 },
 "custom/quit": {
