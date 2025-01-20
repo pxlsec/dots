@@ -10,6 +10,10 @@ theme "catppuccin-macchiato"
 default_layout "topbar"
 copy_command "wl-copy"                    // wayland
 
+session_serialization true
+pane_viewport_serialization true
+scrollback_lines_to_serialize 200
+
 keybinds {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
