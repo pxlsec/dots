@@ -1,3 +1,5 @@
+source = ~/.config/hypr/colors.conf
+
 # Monitors
 {% if yadm.hostname == "wyvern" %}
 monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10 # Note that screensharing does not work in 10 bit mode
@@ -89,8 +91,11 @@ general {
   gaps_in = 2
   gaps_out = 4
   border_size = 2
-  col.active_border = rgba(595959ee) rgba(505050ee) 30deg
-  col.inactive_border = rgba(454545ee)
+  col.active_border = $primary_fixed $secondary_fixed 30deg
+  col.inactive_border = $surface_container
+  
+  # col.active_border = rgba(595959ee) rgba(505050ee) 30deg
+  # col.inactive_border = rgba(454545ee)
 
   layout = dwindle
 

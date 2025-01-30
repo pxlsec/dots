@@ -1,17 +1,32 @@
+[config]
+# version_check = true
+
 [config.wallpaper]
-command = "swww"
-arguments = ["img", "--transition-type", "center"]
-set = false
+command = "true" # Prevent from setting wallpaper
+# arguments = ["img", "--transition-type", "center"]
 
-[templates.waybar]
-input_path = './templates/colors.css'
-output_path = '~/.config/waybar/colors.css'
-# post_hook = 'pkill -SIGUSR2 waybar'
+[config.custom_colors]
+black = { color = "#000000", blend = true }
+grey = { color = "#666666", blend = true }
+red = { color = "#ff0000", blend = true }
+maroon = { color = "#800000", blend = true }
+green = { color = "#00ff00", blend = true }
+lime = { color = "#008000", blend = true }
+yellow = { color = "#ffff00", blend = true }
+olive = { color = "#808000", blend = true }
+blue = { color = "#0000FF", blend = true }
+navy = { color = "#000080", blend = true }
+fuchsia = { color = "#ff00ff", blend = true }
+purple = { color = "#800080", blend = true }
+aqua = { color = "#00ffff", blend = true }
+teal = { color = "#008080", blend = true }
+white = { color = "#ffffff", blend = true }
+smoke = { color = "#888888", blend = true }
 
-[templates.hyprland]
-input_path = './templates/hyprland-colors.conf'
-output_path = '~/.config/hypr/colors.conf'
+[config.custom_keywords]
+font = "FiraCode Nerd Font"
 
-[templates.ghostty]
-input_path = './templates/ghostty-theme.conf'
-output_path = '~/.config/ghostty/themes/colors'
+[templates]
+waybar = { input_path = './templates/colors.css', output_path = '~/.config/waybar/colors.css' }
+hyprland = { input_path = './templates/hyprland-colors.conf', output_path = '~/.config/hypr/colors.conf' }
+ghostty = { input_path = './templates/ghostty-theme.conf', output_path = '~/.config/ghostty/themes/colors' }
