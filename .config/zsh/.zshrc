@@ -73,7 +73,6 @@ alias "hx"="helix"
 alias "pp"="sudo powerpill"
 alias "pps"="sudo powerpill -Syu && paru -Su"
 alias "o"="xdg-open"
-alias "ssh"="kitten ssh"
 
 # Shell integrations
 eval "$(fzf --zsh)"

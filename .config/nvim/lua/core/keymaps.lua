@@ -21,10 +21,10 @@ local opts = { silent = true }
 keymap("n", "t", "i", opts)
 
 -- General navigation
-keymap({"n", "v", "x"}, "h", "<Left>", opts)
-keymap({"n", "v", "x"}, "n", "<Down>", opts)
-keymap({"n", "v", "x"}, "e", "<Up>", opts)
-keymap({"n", "v", "x"}, "i", "<Right>", opts)
+keymap({"n", "v", "x"}, "h", "h", opts)
+keymap({"n", "v", "x"}, "n", "gj", opts)
+keymap({"n", "v", "x"}, "e", "gk", opts)
+keymap({"n", "v", "x"}, "i", "l", opts)
 
 -- Insert mode navigation
 -- keymap("i", "<C-h>", "<Left>", opts)
