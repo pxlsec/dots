@@ -35,7 +35,7 @@
     "wireplumber": {
       "format": "{icon}  {volume}%",
       "format-muted": "  {volume}%",
-      "on-click": "helvum",
+      "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
       "on-click-right": "pavucontrol",
       "format-icons": ["", "", ""]
     },

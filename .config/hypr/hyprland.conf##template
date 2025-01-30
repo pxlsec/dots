@@ -186,3 +186,7 @@ source = ~/.config/hypr/keybinds.conf
 debug {
   disable_logs = true
 }
+
+ecosystem {
+  no_update_news = true
+}
