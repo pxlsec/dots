@@ -14,8 +14,10 @@ function notify() {
 
 apply() {
   # send notification
-  notify "GameMode started"
+  notify -a gamemode "Gamemode" "Session started"
 
+  swaync-client --inhibitor-add "gamemode"
+  
   # stop mpvpaper
   echo '{ "command": ["set_property", "pause", true] }' | socat - /tmp/mpv-socket
   
@@ -53,7 +55,9 @@ apply() {
 
 revert() {
   # send notification
-  notify "GameMode ended"
+  notify -a gamemode "Gamemode" "Session ended"
+
+  swaync-client --inhibitor-remove "gamemode"
 
   # start wallpaper
   echo '{ "command": ["set_property", "pause", false] }' | socat - /tmp/mpv-socket

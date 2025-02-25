@@ -14,7 +14,7 @@ monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10 # Note that screensharing doe
 
 # Default apps
 $BAR=waybar
-$NOTIFICATIONS=dunst
+$NOTIFICATIONS=swaync
 $WALLPAPER=hyprpaper # mpvpaper --auto-stop --fork --mpv-options "--input-ipc-server=/tmp/mpv-socket --no-audio --loop-playlist --speed=0.66 --save-position-on-quit=no" DP-1 ~/Wallpapers/Live/mylivewallpapers-com-Cyberpunk-Oni-Mask-Babe-4K-EDIT.mp4
 $SHELL=ghostty
 $BROWSER=zen-browser
@@ -35,7 +35,7 @@ exec-once = $DISCORD
 exec-once = $BROWSER
 exec-once = steam-native -silent
 {% if yadm.hostname == "wyvern" %}
-exec-once = systemctl --user restart microphone-filter.service headphone-filter.service
+exec-once = systemctl --user restart microphone-filter.service
 {% endif %}
 
 exec = hyprctl switchxkblayout at-translated-set-2-keyboard 1
@@ -88,9 +88,10 @@ gestures {
 }
 
 general {
-  gaps_in = 2
-  gaps_out = 4
-  border_size = 2
+  gaps_in = 4
+  gaps_out = 6
+
+  border_size = 0
   col.active_border = $primary_fixed $secondary_fixed 30deg
   col.inactive_border = $surface_container
   
@@ -107,7 +108,7 @@ decoration {
   blur {
     enabled = yes
     size = 3
-    passes = 3
+    passes = 2
     ignore_opacity = false
     new_optimizations = yes
     xray = false

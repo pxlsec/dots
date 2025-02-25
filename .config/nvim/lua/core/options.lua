@@ -53,6 +53,7 @@ opt.termguicolors = true
 
 opt.scrolloff = 4
 opt.signcolumn = "yes"
+opt.foldcolumn = "0"
 opt.isfname:append("@-@")
 
 opt.updatetime = 50

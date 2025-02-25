@@ -37,7 +37,7 @@ window#waybar {
 #custom-launcher {
   font-size: 1.2em; /* 24px */
   /*padding: 1px 4px 1px 13px;*/
-  padding: .03em .2em .03em .5em;
+  padding: .0em .2em .0em .5em;
   color: @on_primary_container;
 
  	background: alpha(@surface_container, 0.8);
@@ -157,10 +157,17 @@ window#waybar {
 #clock > * {
   color: #FF00FF;
 }
+#custom-notification {
+  font-size: 1.2em; /* 24px */
+ 	background: alpha(@surface_container, 0.8);
+  color: @on_primary_container;
+  padding: .01em .65em 0em .5em;
+  border-radius: 8px;
+}
 
 tooltip {
 	background: alpha(@surface_container, 0.8);
 	border-radius: 8px;
-  font-size: 24px;
+  font-size: 1.2em;
 	color: @text;
 }

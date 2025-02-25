@@ -1,6 +1,7 @@
 # Style
 font-family = "FiraCode Nerd Font Mono"
 font-size = 11
+font-variation = wght=800
 
 # Valid values are:
 # 

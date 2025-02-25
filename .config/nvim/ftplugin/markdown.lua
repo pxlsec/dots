@@ -6,10 +6,12 @@ opt.spelllang = "en_us,sv"
 
 -- Text wrapping
 opt.wrap = true
-opt.textwidth = 0
+opt.textwidth = 80
 opt.wrapmargin = 0
-opt.linebreak = true
-opt.columns = 80 -- Wrapping after X columns
+opt.linebreak = true -- Break by word instead of character
+-- opt.columns = 80 -- Wrapping after X columns
+
+opt.signcolumn = "no"
 
 -- Add the key mappings only for Markdown files in a zk notebook.
 if require("zk.util").notebook_root(vim.fn.expand('%:p')) ~= nil then
