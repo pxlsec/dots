@@ -6,26 +6,26 @@ general {
 
 # turn off keyboard backlight, uncomment this section if have keyboard backlight.
 listener { 
-    timeout = 150
+    timeout = 30
     on-timeout = brightnessctl -sd rgb:kbd_backlight set 0
     on-resume = brightnessctl -rd rgb:kbd_backlight
 }
 
 # lock screen
 listener {
-    timeout = 300
+    timeout = 120
     on-timeout = loginctl lock-session
 }
 
 # turn off ps controller
 listener {
-    timeout = 380
+    timeout = 180
     on-timeout = dualsensectl power-off
 }
 
 # turn off monitor
 listener {
-    timeout = 380
+    timeout = 180
     on-timeout = hyprctl dispatch dpms off
     on-resume = hyprctl dispatch dpms on
 }
@@ -33,7 +33,7 @@ listener {
 {% if yadm.hostname != "wyvern" %}
 suspend pc
 listener {
-    timeout = 900                                 # 15min
+    timeout = 300                                 # 15min
     on-timeout = systemctl suspend                # suspend pc
 }
 {% endif %}

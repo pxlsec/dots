@@ -26,8 +26,39 @@ smoke = { color = "#888888", blend = true }
 [config.custom_keywords]
 font = "FiraCode Nerd Font"
 
-[templates]
-waybar = { input_path = './templates/colors.css', output_path = '~/.config/waybar/colors.css' }
-wofi = { input_path = './templates/colors.css', output_path = '~/.config/wofi/colors.css' }
-hyprland = { input_path = './templates/hyprland-colors.conf', output_path = '~/.config/hypr/colors.conf' }
-ghostty = { input_path = './templates/ghostty-theme.conf', output_path = '~/.config/ghostty/themes/colors' }
+[templates.waybar]
+input_path = './templates/colors.css'
+output_path = '~/.config/waybar/colors.css'
+
+[templates.wofi]
+input_path = './templates/colors.css'
+output_path = '~/.config/wofi/colors.css'
+
+[templates.hyprland]
+input_path = './templates/hyprland-colors.conf'
+output_path = '~/.config/hypr/colors.conf'
+
+[templates.ghostty]
+input_path = './templates/ghostty-theme.conf'
+output_path = '~/.config/ghostty/themes/colors'
+
+#[templates.starship]
+#input_path = 'path/to/template'
+#output_path = '~/.config/starship.toml'
+
+[templates.pywalfox]
+input_path = './templates/pywalfox.json'
+output_path = '~/.cache/wal/colors.json'
+post_hook = 'pywalfox update'
+
+[templates.gtk3]
+input_path = './templates/gtk.css'
+output_path = '~/.config/gtk-3.0/colors.css'
+
+[templates.gtk4]
+input_path = './templates/gtk.css'
+output_path = '~/.config/gtk-4.0/colors.css'
+
+[templates.qt5ct]
+input_path = './templates/qtct.conf'
+output_path = '~/.config/qt5ct/colors/matugen.conf'

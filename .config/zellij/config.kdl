@@ -6,7 +6,7 @@ plugins {
     session-manager { path "session-manager"; }
 }
 pane_frames false
-theme "catppuccin-macchiato"
+theme "tokyonight"
 default_layout "topbar"
 copy_command "wl-copy"                    // wayland
 

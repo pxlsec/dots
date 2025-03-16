@@ -116,6 +116,9 @@ decoration {
     contrast = 0.8916
     brightness = 0.8172
   }
+  shadow {
+    enabled = no
+  }
 }
 
 animations {
@@ -141,13 +144,13 @@ misc {
 
 # Windowrules
 ## Zen Browser 
-windowrulev2 = workspace 2 silent, class:(zen-beta)
+windowrulev2 = workspace 2 silent, class:(zen)
 
-windowrulev2 = float, class:(zen-beta), title:(Picture-in-Picture)
-windowrulev2 = pin, class:(zen-beta), title:(Picture-in-Picture)
-windowrulev2 = size 30% 30%, class:(zen-beta), title:(Picture-in-Picture)
-#windowrulev2 = move 100%-w-4 100%-h-4, class:(zen-beta), title:(Picture-in-Picture)
-windowrulev2 = move 69.9% 69.9%, class:(zen-beta), title:(Picture-in-Picture)
+windowrulev2 = float, class:(zen), title:(Picture-in-Picture)
+windowrulev2 = pin, class:(zen), title:(Picture-in-Picture)
+windowrulev2 = size 30% 30%, class:(zen), title:(Picture-in-Picture)
+#windowrulev2 = move 100%-w-4 100%-h-4, class:(zen), title:(Picture-in-Picture)
+windowrulev2 = move 69.9% 69.9%, class:(zen), title:(Picture-in-Picture)
 
 # Discord 
 windowrulev2 = workspace 5 silent, class:(discord)
@@ -167,6 +170,7 @@ windowrulev2 = workspace 1 silent, class:(steam)
 windowrulev2 = workspace 1 silent, title:(Steam) # The initial update prompt has no class.
 
 # Games
+windowrulev2 = tag +games, class:(gamescope)
 windowrulev2 = tag +games, class:(steam_app_\d+)
 windowrulev2 = tag +games, class:(cs2)
 windowrulev2 = tag +games, class:(Minecraft.*)
