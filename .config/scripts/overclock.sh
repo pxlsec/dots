@@ -34,24 +34,31 @@ apply () {
 
   # Fan curve
   # INDEX FAN% TEMP
-  echo '0 25 20' > "$CARD"/gpu_od/fan_ctrl/fan_curve
-  echo '1 50 25' > "$CARD"/gpu_od/fan_ctrl/fan_curve
-  echo '2 60 50' > "$CARD"/gpu_od/fan_ctrl/fan_curve
-  echo '3 70 80' > "$CARD"/gpu_od/fan_ctrl/fan_curve
-  echo '4 80 100' > "$CARD"/gpu_od/fan_ctrl/fan_curve
-  echo 'c' > "$CARD"/gpu_od/fan_ctrl/fan_curve
+  # echo '0 25 20' > "$CARD"/gpu_od/fan_ctrl/fan_curve
+  # echo '1 50 25' > "$CARD"/gpu_od/fan_ctrl/fan_curve
+  # echo '2 60 50' > "$CARD"/gpu_od/fan_ctrl/fan_curve
+  # echo '3 70 80' > "$CARD"/gpu_od/fan_ctrl/fan_curve
+  # echo '4 80 100' > "$CARD"/gpu_od/fan_ctrl/fan_curve
+  # echo 'c' > "$CARD"/gpu_od/fan_ctrl/fan_curve
+
+  echo '2500' > "$CARD"/gpu_od/fan_ctrl/acoustic_limit_rpm_threshold
+  echo 'c' > "$CARD"/gpu_od/fan_ctrl/acoustic_limit_rpm_threshold
+
+  echo '85' > "$CARD"/gpu_od/fan_ctrl/fan_target_temperature
+  echo 'c' > "$CARD"/gpu_od/fan_ctrl/fan_target_temperature
 
   # Set Profile
-  echo 'manual' > "$CARD"/power_dpm_force_performance_level
-  echo '1' > "$CARD"/pp_power_profile_mode # 1 referring to 3D Fullscreen
-  echo '3' > "$CARD"/pp_dpm_mclk # Force highest memory clock
+  # echo 'auto' > "$CARD"/power_dpm_force_performance_level
+  # echo 'manual' > "$CARD"/power_dpm_force_performance_level
+  # echo '1' > "$CARD"/pp_power_profile_mode # 1 referring to 3D Fullscreen
+  # echo '3' > "$CARD"/pp_dpm_mclk # Force highest memory clock
 
   # Power limit
   cat "$CARD"/hwmon/hwmon2/power1_cap_max > "$CARD"/hwmon/hwmon2/power1_cap
 
   # Overclock
-  echo 's 1 3000' > "$CARD"/pp_od_clk_voltage # Core freq
-  echo 'm 1 750' > "$CARD"/pp_od_clk_voltage # Memory freq
+  echo 's 1 2940' > "$CARD"/pp_od_clk_voltage # Core freq
+  echo 'm 1 1250' > "$CARD"/pp_od_clk_voltage # Memory freq
   echo 'vo -50' > "$CARD"/pp_od_clk_voltage # Testing for stability -65
 
   echo 'c' > "$CARD"/pp_od_clk_voltage # Apply OC
@@ -61,7 +68,7 @@ apply () {
   pstate=$(cat /sys/devices/system/cpu/intel_pstate/status)
 
   if [ $pstate == "active" ]; then
-    echo "Cpu is using 'intel_pstate=active"
+    echo "Cpu is using 'intel_pstate=active'"
 
     for dir in /sys/devices/system/cpu/cpu*/; do
       [[ ! "$dir" =~ ^/sys/devices/system/cpu/cpu[0-9]+/$ ]] && continue

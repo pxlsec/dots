@@ -76,7 +76,7 @@ input {
       disable_while_typing = yes
     }
 
-    sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+    sensitivity = -0.25 # -1.0 - 1.0, 0 means no modification.
     accel_profile = flat
 }
 
@@ -135,22 +135,23 @@ animations {
 }
 
 misc {
-   vrr = 1
-   mouse_move_enables_dpms = true
+   vrr = 2
    key_press_enables_dpms = true
    disable_hyprland_logo = true
    disable_splash_rendering = true
 }
 
 # Windowrules
+windowrulev2 = idleinhibit fullscreen, focus:1
+
 ## Zen Browser 
 windowrulev2 = workspace 2 silent, class:(zen)
 
 windowrulev2 = float, class:(zen), title:(Picture-in-Picture)
 windowrulev2 = pin, class:(zen), title:(Picture-in-Picture)
 windowrulev2 = size 30% 30%, class:(zen), title:(Picture-in-Picture)
-#windowrulev2 = move 100%-w-4 100%-h-4, class:(zen), title:(Picture-in-Picture)
-windowrulev2 = move 69.9% 69.9%, class:(zen), title:(Picture-in-Picture)
+windowrulev2 = move 100%-w-4 100%-h-4, class:(zen), title:(Picture-in-Picture)
+# windowrulev2 = move 69.9% 69.9%, class:(zen), title:(Picture-in-Picture)
 
 # Discord 
 windowrulev2 = workspace 5 silent, class:(discord)
@@ -188,10 +189,15 @@ windowrulev2 = float, class:(zenity)
 # keybinds
 source = ~/.config/hypr/keybinds.conf
 
+# experimental {
+#   xx_color_management_v4 = true
+# }
+
 debug {
   disable_logs = true
 }
 
 ecosystem {
   no_update_news = true
+  no_donation_nag = true
 }

@@ -64,14 +64,14 @@
 
 // middle section
     "mpris": {
+      "player": "spotify",
 	      "format": "{status_icon} {dynamic}",
         "dynamic-order": ["artist", "title"],
       	"status-icons": {
           "playing": "",
 	      	"paused": "",
           "stopped": ""
-	      },
-       	"ignored-players": ["firefox"]
+	      }
     },
 
 // last section
@@ -158,40 +158,6 @@
                 }
 },
 
-  "group/power": {
-    "orientation": "inherit",
-    "drawer": {
-        "transition-duration": 500,
-        "children-class": "more-power",
-        "transition-left-to-right": false
-    },
-    "modules": [
-        "custom/power", // First element is the "group leader" and won't ever be hidden
-        "custom/quit",
-        "custom/lock",
-        "custom/reboot"
-    ]
-},
-"custom/quit": {
-    "format": "󰗼 ",
-    "tooltip": false,
-    "on-click": "hyprctl dispatch exit"
-},
-"custom/lock": {
-    "format": "󰍁 ",
-    "tooltip": false,
-    "on-click": "loginctl lock-session && hyprctl dispatch dpms off"
-},
-"custom/reboot": {
-    "format": "󰜉 ",
-    "tooltip": false,
-    "on-click": "reboot"
-},
-"custom/power": {
-    "format": " ",
-    "tooltip": false,
-    "on-click": "shutdown now"
-},
 "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
