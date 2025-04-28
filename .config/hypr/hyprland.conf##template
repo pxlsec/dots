@@ -74,6 +74,7 @@ input {
     touchpad {
       natural_scroll = yes
       disable_while_typing = yes
+      scroll_factor = 0.3
     }
 
     sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
