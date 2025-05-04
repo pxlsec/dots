@@ -1,0 +1,43 @@
+/* Palette Colors */
+
+* {
+  /* Palette */
+    custom-bg0:          {{colors.surface_container.default.hex}}d0;
+    custom-bg1:          {{colors.surface_dim.default.hex}}a0;
+    custom-fg0:          {{colors.on_surface_variant.default.hex}};
+    custom-fg1:          {{colors.on_primary_container.default.hex}};
+    custom-red-dark:     #cc241d;
+    custom-red-light:    #fb4934;
+    custom-yellow-dark:  #d79921;
+    custom-yellow-light: #fabd2f;
+
+  /* Theme */
+
+    background:                  @custom-bg0;
+    background-color:            transparent;
+    foreground:                  @custom-fg0;
+    border-color:                transparent;
+    separatorcolor:              @border-color;
+    scrollbar-handle:            @border-color;
+
+    normal-background:           transparent;
+    normal-foreground:           @foreground;
+    alternate-normal-background: transparent;
+    alternate-normal-foreground: @foreground;
+    selected-normal-background:  @custom-bg1;
+    selected-normal-foreground:  @custom-fg1;
+
+    active-background:           @custom-yellow-dark;
+    active-foreground:           @background;
+    alternate-active-background: @active-background;
+    alternate-active-foreground: @active-foreground;
+    selected-active-background:  @custom-yellow-light;
+    selected-active-foreground:  @active-foreground;
+
+    urgent-background:           @custom-red-dark;
+    urgent-foreground:           @background;
+    alternate-urgent-background: @urgent-background;
+    alternate-urgent-foreground: @urgent-foreground;
+    selected-urgent-background:  @custom-red-light;
+    selected-urgent-foreground:  @urgent-foreground;
+}

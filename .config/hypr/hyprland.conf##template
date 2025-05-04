@@ -143,8 +143,6 @@ misc {
 }
 
 # Windowrules
-windowrulev2 = idleinhibit fullscreen, focus:1
-
 ## Zen Browser 
 windowrulev2 = workspace 2 silent, class:(zen)
 
@@ -166,6 +164,7 @@ windowrulev2 = size 1280 720, class:(mpv)
 
 # wofi
 layerrule = blur, wofi
+layerrule = blur, rofi
 
 # Steam
 windowrulev2 = workspace 1 silent, class:(steam)

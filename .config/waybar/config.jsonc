@@ -11,7 +11,7 @@
 // first section
     "custom/launcher": {
         "format":" ",
-        "on-click": "killall wofi || wofi",
+        "on-click": "killall rofi || rofi -show drun",
         "tooltip": false
     },
 
@@ -36,8 +36,9 @@
       "format": "{icon}  {volume}%",
       "format-muted": "  {volume}%",
       "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-      "on-click-right": "pavucontrol",
-      "format-icons": ["", "", ""]
+      "on-click-right": "helvum",
+      "format-icons": ["", "", ""],
+      "tooltip": false
     },
 
     "pulseaudio": {
@@ -71,7 +72,10 @@
           "playing": "",
 	      	"paused": "",
           "stopped": ""
-	      }
+	      },
+        "on-scroll-up": "playerctl -p 'spotify' volume 0.05+",
+        "on-scroll-down": "playerctl -p 'spotify' volume 0.05-",
+        "tooltip": false
     },
 
 // last section
@@ -98,7 +102,7 @@
         //"format-alt": "{time}",
     },
 
-"network": {
+    "network": {
     "format": "{ifname}",
     "format-wifi": "󰖩",
     "format-ethernet": "󰈁",
@@ -108,9 +112,9 @@
     "tooltip-format-ethernet": " {ifname} |  {bandwidthDownBits} |  {bandwidthUpBits}",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50
-},
+    },
 
-// PS controller
+    // PS controller
     "upower": {
         "native-path": "ps-controller-battery-58:10:31:80:ef:8d",
         "show-icon": false,
@@ -120,7 +124,7 @@
         "tooltip": false
     },
 
-"power-profiles-daemon": {
+    "power-profiles-daemon": {
       "format": "{icon}",
       "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
       "tooltip": true,
@@ -135,30 +139,14 @@
     "tray": {
         "icon-size": 24,
         "spacing":10
-     },
+    },
 
-     "clock": {
-    "format": " {:%H:%M}",
-    "tooltip-format": "<tt><small>{calendar}</small></tt>",
-    "calendar": {
-                "mode"          : "month",
-                "weeks-pos"     : "right",
-                "on-scroll"     : 1,
-                "format": {
-                          "months":     "<span color='#ffead3'><b>{}</b></span>",
-                          "days":       "<span color='#ecc6d9'><b>{}</b></span>",
-                          "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
-                          "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
-                          "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
-                          }
-                },
-    "actions":  {
-                "on-scroll-up": "shift_up",
-                "on-scroll-down": "shift_down"
-                }
+    "clock": {
+      "format": " {:%H:%M}",
+      "tooltip": false
 },
 
-"custom/notification": {
+  "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
     "format-icons": {
