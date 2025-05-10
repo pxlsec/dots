@@ -5,67 +5,81 @@
     "source": "arch"
   },
   "modules": [
+    "break",
     "title",
-    "separator",
+    "break",
     {
       "type": "os",
       "key": " ",
+      "keyColor": "yellow",
       "format": "Arch Linux ({12})"
     },
     {
       "type": "kernel",
-      "key": " "
+      "key": " ",
+      "keyColor": "yellow"
     },
     {
       "type": "packages",
       "key": "󰏗 ",
+      "keyColor": "yellow",
       "format": "{} (pacman)"
     },
     {
       "type": "uptime",
-      "key": " "
+      "key": " ",
+      "keyColor": "yellow"
     },
     "break",
     {
       "type": "wm",
-      "key": " "
+      "key": " ",
+      "keyColor": "red"
+
     },
     {
       "type": "terminal",
-      "key": " "
+      "key": " ",
+      "keyColor": "red"
     },
     {
       "type": "shell",
-      "key": " "
+      "key": " ",
+      "keyColor": "red"
     },
     {
       "type": "terminalfont",
-      "key": " "
+      "key": " ",
+      "keyColor": "red"
     },
     {
       "type": "theme",
-      "key": " "
+      "key": " ",
+      "keyColor": "red"
     },
     "break",
     {
       "type": "cpu",
-      "key": " "
+      "key": " ",
+      "keyColor": "magenta"
     },
     {
       "type": "gpu",
-      "key": " "
+      "key": " ",
+      "keyColor": "magenta"
     },
     {
       "type": "memory",
-      "key": " "
+      "key": " ",
+      "keyColor": "magenta"
     },
     {
       "type": "display",
-      "key": "󰍹 "
+      "key": "󰍹 ",
+      "keyColor": "magenta"
+
     },
     "battery",
-    "poweradapter",
-    "break",
-    "colors"
+    "poweradapter"
   ]
 }

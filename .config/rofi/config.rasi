@@ -13,7 +13,7 @@ configuration {
 window {
 	  border:							    0px;
     border-radius:          8px;
-	  width:							    35%;
+	  width:							    30%;
     location:               center;
 }
 

@@ -42,6 +42,18 @@ output_path = '~/.config/hypr/colors.conf'
 input_path = './templates/ghostty-theme.conf'
 output_path = '~/.config/ghostty/themes/colors'
 
+[templates.kitty]
+input_path = './templates/kitty.conf'
+output_path = '~/.config/kitty/palette.conf'
+
+[templates.rofi]
+input_path = './templates/rofi.rasi'
+output_path = '~/.config/rofi/colors.rasi'
+
+[templates.dunst]
+input_path = './templates/dunst.conf'
+output_path = '~/.config/dunst/dunstrc.d/10-colors.conf'
+
 #[templates.starship]
 #input_path = 'path/to/template'
 #output_path = '~/.config/starship.toml'

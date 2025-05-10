@@ -1,8 +1,7 @@
 general {
-  ignore_dbus_inhibit = true                                                        # ignore dbus-sent idle inhibit events (e.g. from firefox)
-    lock_cmd = pidof hyprlock || hyprlock                                           # avoid starting multiple hyprlock instances.
-    before_sleep_cmd = pidof hyprlock || hyprlock --no-fade-in && playerctl pause   # lock before suspend.
-    after_sleep_cmd = hyprctl dispatch dpms on                                      # to avoid having to press a key twice to turn on the display.
+    lock_cmd = pidof hyprlock || hyprlock                         # avoid starting multiple hyprlock instances.
+    before_sleep_cmd = pidof hyprlock || hyprlock --no-fade-in    # lock before suspend.
+    after_sleep_cmd = hyprctl dispatch dpms on                    # to avoid having to press a key twice to turn on the display.
 }
 
 # turn off keyboard backlight, uncomment this section if have keyboard backlight.

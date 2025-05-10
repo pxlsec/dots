@@ -14,9 +14,9 @@ monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10 # Note that screensharing doe
 
 # Default apps
 $BAR=waybar
-$NOTIFICATIONS=swaync
+$NOTIFICATIONS=dunst
 $WALLPAPER=hyprpaper # mpvpaper --auto-stop --fork --mpv-options "--input-ipc-server=/tmp/mpv-socket --no-audio --loop-playlist --speed=0.66 --save-position-on-quit=no" DP-1 ~/Wallpapers/Live/mylivewallpapers-com-Cyberpunk-Oni-Mask-Babe-4K-EDIT.mp4
-$SHELL=ghostty
+$SHELL=kitty
 $BROWSER=zen-browser
 $MUSIC=spotify
 $DISCORD=discord

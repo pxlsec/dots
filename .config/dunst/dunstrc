@@ -1,0 +1,44 @@
+[global]
+  font = "FiraCode Nerd Font"
+
+	# Sort messages by urgency
+	sort = yes
+
+  offset = (6, 6)
+  width = 350
+  height = (0, 300)
+
+	corner_radius = 8
+  transparency = 50
+  frame_width = 0
+
+  text_icon_padding = 10
+  max_icon_size = 64
+
+  icon_theme = Adwaita
+  enable_recursive_icon_lookup = true
+
+	# Mouse actions
+	mouse_left_click = close_current
+	mouse_middle_click = do_action, close_current
+	mouse_right_click = close_all
+
+[urgency_low]
+	timeout = 6
+  default_icon = dialog-information
+
+[urgency_normal]
+	timeout = 6
+  default_icon = dialog-information
+
+[urgency_critical]
+	timeout = 6
+  default_icon = dialog-warning
+
+# Delay notifications while in fullscreen
+[fullscreen_delay_everything]
+  fullscreen = delay
+
+[fullscreen_show_critical]
+   msg_urgency = critical
+   fullscreen = show
