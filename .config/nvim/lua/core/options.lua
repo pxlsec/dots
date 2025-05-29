@@ -56,7 +56,11 @@ opt.signcolumn = "yes"
 opt.foldcolumn = "0"
 opt.isfname:append("@-@")
 
-opt.updatetime = 50
+opt.updatetime = 1000
+vim.diagnostic.config({
+  visual_text = false
+})
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
 -- -- Foldies
 -- vim.o.foldcolumn = "1" -- '0' is not bad
