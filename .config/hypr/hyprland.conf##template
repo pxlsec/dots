@@ -69,15 +69,14 @@ input {
     kb_options = caps:backspace
     kb_rules =
 
-    follow_mouse = 1
-    mouse_refocus = 0
+    # mouse_refocus = 0 # Seems to cause issues on net ease games
     touchpad {
       natural_scroll = yes
       disable_while_typing = yes
       scroll_factor = 0.3
     }
 
-    sensitivity = -0.25 # -1.0 - 1.0, 0 means no modification.
+    sensitivity = -0.35 # -1.0 - 1.0, 0 means no modification.
     accel_profile = flat
 }
 
@@ -135,6 +134,10 @@ animations {
   animation = borderangle, 1, 8, easeCubic
 }
 
+render {
+  new_render_scheduling = true
+}
+
 misc {
    vrr = 2
    key_press_enables_dpms = true
@@ -189,9 +192,9 @@ windowrulev2 = float, class:(zenity)
 # keybinds
 source = ~/.config/hypr/keybinds.conf
 
-# experimental {
-#   xx_color_management_v4 = true
-# }
+experimental {
+  xx_color_management_v4 = true
+}
 
 debug {
   disable_logs = true
