@@ -16,7 +16,7 @@ monitor=DP-1,2560x1440@239.97200,0x0,1,bitdepth,10 # Note that screensharing doe
 $BAR=waybar
 $NOTIFICATIONS=dunst
 $WALLPAPER=hyprpaper # mpvpaper --auto-stop --fork --mpv-options "--input-ipc-server=/tmp/mpv-socket --no-audio --loop-playlist --speed=0.66 --save-position-on-quit=no" DP-1 ~/Wallpapers/Live/mylivewallpapers-com-Cyberpunk-Oni-Mask-Babe-4K-EDIT.mp4
-$SHELL=kitty
+$SHELL=ghostty
 $BROWSER=zen-browser
 $MUSIC=spotify
 $DISCORD=discord
@@ -38,8 +38,7 @@ exec-once = steam-native -silent
 exec-once = systemctl --user restart microphone-filter.service
 {% endif %}
 
-exec = hyprctl switchxkblayout at-translated-set-2-keyboard 1
-exec = hyprctl switchxkblayout asus-rog-claymore-gaming-keyboard 1
+exec = hyprctl switchxkblayout all 1
 
 # Some default env vars.
 {% if yadm.hostname == "medusa" %}
@@ -77,7 +76,12 @@ input {
     }
 
     sensitivity = -0.35 # -1.0 - 1.0, 0 means no modification.
-    accel_profile = flat
+    accel_profile = custom 6 0 1
+}
+
+device {
+    name = compx-x2-wireless*
+    accel_profile = custom 6 0 1 # Compensate for high DPI in cursor mode
 }
 
 gestures {
