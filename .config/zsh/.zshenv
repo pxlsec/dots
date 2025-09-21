@@ -41,11 +41,12 @@ export WINEPREFIX="$XDG_DATA_HOME"/wine
 #export GNUPGHOME="$XDG_DATA_HOME"/gnupg 
 
 # Pass
-export "PASSWORD_STORE_DIR"="$XDG_DATA_HOME"/pass
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/pass
 
 # ZK
-export "ZK_NOTEBOOK_DIR"="$XDG_DATA_HOME/zk"
+export ZK_NOTEBOOK_DIR="$XDG_DATA_HOME"/zk
 
 # Other terminal utils
-export "EDITOR"="nvim"
-export "PAGER"="most"
+export EDITOR=nvim
+export PAGER=bat
+export MANPAGER="sh -c 'awk '\''{ gsub(/\x1B\[[0-9;]*m/, \"\", \$0); gsub(/.\x08/, \"\", \$0); print }'\'' | bat -p -lman'"
