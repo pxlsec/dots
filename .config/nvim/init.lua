@@ -1,4 +1,355 @@
-vim.opt.termguicolors = true
-require('core.lazy')
-require('core.keymaps')
-require('core.options')
+vim.g.mapleader = " "
+vim.o.mouse = ""
+vim.o.termguicolors = true
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.signcolumn = "yes"
+vim.o.winborder = "rounded"
+vim.o.laststatus = 3
+vim.o.wrap = false
+vim.o.undofile = true
+
+vim.o.swapfile = false
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>cf', vim.lsp.buf.format)
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>T', ':TransparentToggle<CR>')
+
+vim.pack.add({
+    { src = "https://github.com/sainnhe/sonokai" },
+    { src = "https://github.com/xiyaowong/transparent.nvim" },
+    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
+    { src = "https://github.com/onsails/lspkind.nvim" },
+    { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/mason-org/mason.nvim" },
+    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    { src = "https://github.com/nvim-lualine/lualine.nvim" },
+    { src = "https://github.com/b0o/incline.nvim" },
+    { src = "https://github.com/lewis6991/gitsigns.nvim" },
+    { src = "https://github.com/saghen/blink.cmp",                version = vim.version.range('^1') },
+    { src = "https://github.com/L3MON4D3/LuaSnip",                version = vim.version.range('^2') },
+    { src = "https://github.com/j-hui/fidget.nvim" },
+    { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
+    { src = "https://github.com/nvim-telescope/telescope.nvim" },
+    { src = "https://github.com/nvimdev/indentmini.nvim" },
+    --oil / mini.files
+})
+
+-- Treesitter
+vim.api.nvim_create_autocmd('PackChanged', {
+    callback = function(args)
+        if args.data.kind == 'update' and args.data.spec.name == 'nvim-treesitter' then
+            vim.cmd(':TSUpdate')
+            vim.notify("Updating Treesitter Parsers")
+        end
+    end
+})
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { '<filetype>' },
+    callback = function() vim.treesitter.start() end,
+})
+vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+-- LSP settings
+
+require("mason").setup({
+    ui = {
+        icons = {
+            package_installed = "󰄲",
+            package_pending = "󱑣",
+            package_uninstalled = "󰄱"
+        }
+    }
+})
+require("mason-lspconfig").setup()
+vim.keymap.set('n', '<leader>tm', ':Mason<CR>')
+
+vim.api.nvim_create_autocmd('PackChanged', {
+    callback = function(args)
+        if args.data.kind == 'update' and args.data.spec.name == 'mason' then
+            vim.cmd(':MasonUpdate')
+            vim.notify("Updating LSP Servers")
+        end
+    end
+})
+
+-- vim.lsp.enable({ "lua_ls", "clangd", "zls" })
+vim.lsp.config("lua_ls", {
+    settings = {
+        Lua = {
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+            }
+        }
+    }
+})
+vim.opt.completeopt:append("noselect")
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+    callback = function()
+        local mode = vim.api.nvim_get_mode().mode
+        local filetype = vim.bo.filetype
+        if vim.bo.modified == true and mode == 'n' and filetype ~= "oil" then
+            vim.cmd('lua vim.lsp.buf.format()')
+        else
+        end
+    end
+})
+
+vim.diagnostic.config({
+    underline = true,
+    signs = {
+        active = true,
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN]  = "",
+            [vim.diagnostic.severity.HINT]  = "󰟃",
+            [vim.diagnostic.severity.INFO]  = "",
+        },
+    },
+    virtual_text = false,
+    float = {
+        -- border = "single",
+        format = function(diagnostic)
+            return string.format(
+                "%s (%s) [%s]",
+                diagnostic.message,
+                diagnostic.source,
+                diagnostic.code or diagnostic.user_data.lsp.code
+            )
+        end,
+    },
+})
+
+require('blink.cmp').setup {
+    keymap = {
+        preset = 'default'
+    },
+    appearance = {
+        nerd_font_variant = 'mono'
+    },
+    completion = {
+        documentation = {
+            auto_show = false
+        },
+        ghost_text = {
+            enabled = true,
+            show_with_menu = false,
+        },
+        list = { selection = { preselect = true, auto_insert = true } },
+        menu = {
+            auto_show = false,
+            draw = {
+                -- columns = {
+                --     { "label",     "label_description", gap = 1 },
+                --     { "kind_icon", gap = 1,             "kind" }
+                -- },
+                components = {
+                    kind_icon = {
+                        text = function(ctx)
+                            local icon = ctx.kind_icon
+                            if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                                local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                                if dev_icon then
+                                    icon = dev_icon
+                                end
+                            else
+                                icon = require("lspkind").symbolic(ctx.kind, {
+                                    mode = "symbol",
+                                })
+                            end
+
+                            return icon .. ctx.icon_gap
+                        end,
+
+                        -- Optionally, use the highlight groups from nvim-web-devicons
+                        -- You can also add the same function for `kind.highlight` if you want to
+                        -- keep the highlight groups in sync with the icons.
+                        highlight = function(ctx)
+                            local hl = ctx.kind_hl
+                            if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                                local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                                if dev_icon then
+                                    hl = dev_hl
+                                end
+                            end
+                            return hl
+                        end,
+                    }
+                }
+            }
+        }
+    },
+    sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+    },
+    fuzzy = {
+        implementation = "prefer_rust_with_warning"
+    },
+    snippets = {
+        preset = 'luasnip'
+    }
+}
+
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { noremap = true, silent = true })
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
+
+-- Misc
+require('fidget').setup({
+    notification = {
+        override_vim_notify = true, -- Automatically override vim.notify() with Fidget
+    }
+})
+
+require('gitsigns').setup {
+    signs = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '┃' },
+        topdelete    = { text = '┃' },
+        changedelete = { text = '┃' },
+        untracked    = { text = '┃' },
+    },
+    signs_staged = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '┃' },
+        topdelete    = { text = '┃' },
+        changedelete = { text = '┃' },
+        untracked    = { text = '┃' },
+    },
+}
+
+-- Nav
+local oil = require("oil")
+oil.setup({
+    float = {
+        max_width = 0.6,
+        max_height = 0.6,
+    }
+})
+vim.keymap.set("n", "<leader>fe", oil.toggle_float, { noremap = true, silent = true })
+
+local telescope = require('telescope.builtin')
+vim.keymap.set("n", "<leader>ff", telescope.find_files, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fg", telescope.live_grep, { noremap = true, silent = true })
+
+-- Colors
+vim.g.sonokai_style = 'andromeda'
+vim.g.sonokai_colors_override = { ['bg0'] = { '#1e222a', '235' }, ['bg2'] = { '#282c34', '236' } }
+
+vim.cmd.colorscheme "sonokai"
+
+require("transparent").setup({
+    extra_groups = { 'WinSeparator', 'FloatBorder', 'NormalFloat', 'Pmenu', 'PmenuExtra' },
+    exclude_groups = {},
+})
+vim.opt.fillchars:append('eob: ')
+
+require("indentmini").setup({
+    char = '┃'
+})
+vim.cmd.highlight('IndentLine guifg=#2B2D3A')
+vim.cmd.highlight('IndentLineCurrent guifg=#468a9e')
+
+-- LuaLine
+-- Bubbles config for lualine
+-- Author: lokesh-krishna
+-- MIT license, see LICENSE for more details.
+
+-- stylua: ignore
+local colors = {
+    blue   = '#80a0ff',
+    cyan   = '#79dac8',
+    black  = '#080808',
+    white  = '#c6c6c6',
+    red    = '#ff5189',
+    violet = '#d183e8',
+    grey   = '#303030',
+    dark   = '#151515',
+}
+
+local bubbles_theme = {
+    normal = {
+        a = { fg = colors.black, bg = colors.violet },
+        b = { fg = colors.white, bg = colors.grey },
+        c = { fg = colors.white, bg = colors.dark },
+    },
+
+    insert = { a = { fg = colors.black, bg = colors.blue } },
+    visual = { a = { fg = colors.black, bg = colors.cyan } },
+    replace = { a = { fg = colors.black, bg = colors.red } },
+
+    inactive = {
+        a = { fg = colors.white, bg = colors.black },
+        b = { fg = colors.white, bg = colors.black },
+        c = { fg = colors.white },
+    },
+}
+
+require('lualine').setup {
+    options = {
+        theme = 'sonokai',
+        component_separators = '',
+        section_separators = { left = '', right = '' },
+    },
+    sections = {
+        lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
+        lualine_b = { 'filename' },
+        lualine_c = { 'branch', 'diff' },
+        lualine_x = { 'diagnostics', 'lsp_status' },
+        lualine_y = { 'encoding', 'filetype' },
+        lualine_z = {
+            { 'location', separator = { right = '' }, left_padding = 2 },
+        },
+    },
+    inactive_sections = {
+        lualine_a = { 'filename' },
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = { 'location' },
+    },
+    tabline = {},
+    extensions = {},
+}
+
+-- Incline config
+local helpers = require 'incline.helpers'
+local devicons = require 'nvim-web-devicons'
+require('incline').setup {
+    window = {
+        padding = 0,
+        margin = { horizontal = 0, vertical = 0 },
+        overlap = {
+            borders = true,
+            statusline = true,
+            tabline = true,
+            winbar = true
+        },
+    },
+    render = function(props)
+        local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ':t')
+        if filename == '' then
+            filename = '[No Name]'
+        end
+        local ft_icon, ft_color = devicons.get_icon_color(filename)
+        local modified = vim.bo[props.buf].modified
+        return {
+            ft_icon and { ' ', ft_icon, ' ', guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or
+            '',
+            ' ',
+            { filename, gui = modified and 'bold,italic' or 'bold' },
+            ' ',
+            guibg = colors.grey,
+        }
+    end,
+}
