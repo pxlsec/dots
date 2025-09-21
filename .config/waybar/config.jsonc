@@ -1,6 +1,6 @@
 {
     "position": "top",
-    "margin": "3, 5",
+    "margin": "5, 5, 0, 5",
     "spacing": 6,
     "modules-left": ["custom/launcher", "hyprland/workspaces", "wireplumber"],
     "modules-center": ["mpris"],
