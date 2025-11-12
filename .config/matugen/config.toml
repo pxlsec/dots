@@ -2,8 +2,9 @@
 # version_check = true
 
 [config.wallpaper]
-command = "true" # Prevent from setting wallpaper
-# arguments = ["img", "--transition-type", "center"]
+command = "swww"
+arguments = ["img", "--transition-type", "simple", "--transition-duration", "2"]
+set = true
 
 [config.custom_colors]
 black = { color = "#000000", blend = true }
@@ -26,51 +27,12 @@ smoke = { color = "#888888", blend = true }
 [config.custom_keywords]
 font = "FiraCode Nerd Font"
 
-[templates.waybar]
-input_path = './templates/colors.css'
-output_path = '~/.config/waybar/colors.css'
-
-[templates.wofi]
-input_path = './templates/colors.css'
-output_path = '~/.config/wofi/colors.css'
-
 [templates.hyprland]
 input_path = './templates/hyprland-colors.conf'
 output_path = '~/.config/hypr/colors.conf'
+post_hook = 'hyprctl reload'
 
-[templates.ghostty]
-input_path = './templates/ghostty-theme.conf'
-output_path = '~/.config/ghostty/themes/colors'
-
-[templates.kitty]
-input_path = './templates/kitty.conf'
-output_path = '~/.config/kitty/palette.conf'
-
-[templates.rofi]
-input_path = './templates/rofi.rasi'
-output_path = '~/.config/rofi/colors.rasi'
 
 [templates.dunst]
 input_path = './templates/dunst.conf'
 output_path = '~/.config/dunst/dunstrc.d/10-colors.conf'
-
-#[templates.starship]
-#input_path = 'path/to/template'
-#output_path = '~/.config/starship.toml'
-
-[templates.pywalfox]
-input_path = './templates/pywalfox.json'
-output_path = '~/.cache/wal/colors.json'
-post_hook = 'pywalfox update'
-
-[templates.gtk3]
-input_path = './templates/gtk.css'
-output_path = '~/.config/gtk-3.0/colors.css'
-
-[templates.gtk4]
-input_path = './templates/gtk.css'
-output_path = '~/.config/gtk-4.0/colors.css'
-
-[templates.qt5ct]
-input_path = './templates/qtct.conf'
-output_path = '~/.config/qt5ct/colors/matugen.conf'

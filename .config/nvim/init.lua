@@ -14,13 +14,23 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+vim.o.foldcolumn = "1" -- '0' is not bad
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>cf', vim.lsp.buf.format)
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>T', ':TransparentToggle<CR>')
 
+vim.keymap.set({ 'n', 'v', 'x' }, 'j', 'gj')
+vim.keymap.set({ 'n', 'v', 'x' }, '<Down>', 'gj')
+vim.keymap.set({ 'n', 'v', 'x' }, 'k', 'gk')
+vim.keymap.set({ 'n', 'v', 'x' }, '<Up>', 'gk')
+
 vim.pack.add({
-    { src = "https://github.com/sainnhe/sonokai" },
+    { src = "https://github.com/catppuccin/nvim" },
     { src = "https://github.com/xiyaowong/transparent.nvim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
     { src = "https://github.com/onsails/lspkind.nvim" },
@@ -37,8 +47,10 @@ vim.pack.add({
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
-    { src = "https://github.com/nvimdev/indentmini.nvim" },
-    --oil / mini.files
+    { src = "https://github.com/folke/snacks.nvim" },
+    { src = "https://github.com/mfussenegger/nvim-dap" },
+    { src = "https://github.com/jay-babu/mason-nvim-dap.nvim" },
+    { src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
 })
 
 -- Treesitter
@@ -78,6 +90,20 @@ vim.api.nvim_create_autocmd('PackChanged', {
             vim.notify("Updating LSP Servers")
         end
     end
+})
+
+vim.lsp.config('zls', {
+    enable_build_on_save = true,
+    build_on_save_args = { "-fno-bin", "-fincremental" }
+})
+
+require("mason-nvim-dap").setup({
+    -- ensure_installed = {'stylua', 'jq'},
+    handlers = {}, -- sets up dap in the predefined manner
+})
+
+require("nvim-dap-virtual-text").setup({
+    virt_text_win_col = 80, highlight_changed_variables = true
 })
 
 -- vim.lsp.enable({ "lua_ls", "clangd", "zls" })
@@ -230,6 +256,7 @@ require('gitsigns').setup {
 -- Nav
 local oil = require("oil")
 oil.setup({
+    default_file_explorer = false, -- Breaks spellfile downloading
     float = {
         max_width = 0.6,
         max_height = 0.6,
@@ -237,66 +264,59 @@ oil.setup({
 })
 vim.keymap.set("n", "<leader>fe", oil.toggle_float, { noremap = true, silent = true })
 
+-- folke/rename integration
+vim.api.nvim_create_autocmd("User", {
+    pattern = "OilActionsPost",
+    callback = function(event)
+        if event.data.actions[1].type == "move" then
+            Snacks.rename.on_rename_file(event.data.actions[1].src_url, event.data.actions[1].dest_url)
+        end
+    end,
+})
+
 local telescope = require('telescope.builtin')
 vim.keymap.set("n", "<leader>ff", telescope.find_files, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>fg", telescope.live_grep, { noremap = true, silent = true })
 
 -- Colors
-vim.g.sonokai_style = 'andromeda'
-vim.g.sonokai_colors_override = { ['bg0'] = { '#1e222a', '235' }, ['bg2'] = { '#282c34', '236' } }
 
-vim.cmd.colorscheme "sonokai"
-
-require("transparent").setup({
-    extra_groups = { 'WinSeparator', 'FloatBorder', 'NormalFloat', 'Pmenu', 'PmenuExtra' },
-    exclude_groups = {},
+require("catppuccin").setup({
+    flavour = "mocha",
+    transparent_background = true
 })
+vim.cmd.colorscheme "catppuccin"
+
 vim.opt.fillchars:append('eob: ')
 
-require("indentmini").setup({
-    char = '┃'
+
+
+require("snacks").setup({
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+    -- bigfile = { enabled = true },
+    -- dashboard = { enabled = true },
+    -- explorer = { enabled = true },
+    indent = { enabled = true },
+    input = { enabled = true },
+    -- picker = { enabled = true },
+    notifier = { enabled = true },
+    -- quickfile = { enabled = true },
+    -- scope = { enabled = true },
+    -- scroll = { enabled = true },
+    -- statuscolumn = { enabled = true },
+    -- words = { enabled = true },
 })
-vim.cmd.highlight('IndentLine guifg=#2B2D3A')
-vim.cmd.highlight('IndentLineCurrent guifg=#468a9e')
 
--- LuaLine
--- Bubbles config for lualine
--- Author: lokesh-krishna
--- MIT license, see LICENSE for more details.
-
--- stylua: ignore
-local colors = {
-    blue   = '#80a0ff',
-    cyan   = '#79dac8',
-    black  = '#080808',
-    white  = '#c6c6c6',
-    red    = '#ff5189',
-    violet = '#d183e8',
-    grey   = '#303030',
-    dark   = '#151515',
-}
-
-local bubbles_theme = {
-    normal = {
-        a = { fg = colors.black, bg = colors.violet },
-        b = { fg = colors.white, bg = colors.grey },
-        c = { fg = colors.white, bg = colors.dark },
-    },
-
-    insert = { a = { fg = colors.black, bg = colors.blue } },
-    visual = { a = { fg = colors.black, bg = colors.cyan } },
-    replace = { a = { fg = colors.black, bg = colors.red } },
-
-    inactive = {
-        a = { fg = colors.white, bg = colors.black },
-        b = { fg = colors.white, bg = colors.black },
-        c = { fg = colors.white },
-    },
-}
+-- require("indentmini").setup({
+--     char = '┃'
+-- })
+-- vim.cmd.highlight('IndentLine guifg=#2B2D3A')
+-- vim.cmd.highlight('IndentLineCurrent guifg=#468a9e')
 
 require('lualine').setup {
     options = {
-        theme = 'sonokai',
+        theme = 'catppuccin',
         component_separators = '',
         section_separators = { left = '', right = '' },
     },
@@ -349,7 +369,6 @@ require('incline').setup {
             ' ',
             { filename, gui = modified and 'bold,italic' or 'bold' },
             ' ',
-            guibg = colors.grey,
         }
     end,
 }

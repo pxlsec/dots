@@ -36,6 +36,9 @@ monitor.alsa.rules = [
     actions = {
       update-props = {
         node.description = "Rode NT USB"
+        audio.rate = 48000
+        # Following value should be doubled until audio does not cut out or other issues stop occurring
+        api.alsa.period-size = 256
       }
     }
   },
@@ -43,47 +46,18 @@ monitor.alsa.rules = [
     matches = [
       {
         # Headphone sink
-        node.name = "alsa_output.pci-0000_00_1f.3.analog-stereo"
+        node.name = "alsa_output.usb-FIIO_FIIO_KA15-01.analog-stereo"
       }
     ]
     actions = {
       update-props = {
-        node.description = "Sennheiser HD 560S"
-      }
-    }
-  },
+        node.description = "FIIO KA15"
+        # audio.format = "S32_LE" # Not working?
+        alsa.resolution_bits = "32"
+        audio.rate = 96000
 
-# Change samplerate
-  
-  {
-    matches = [
-      {
-        # Microphone source
-        node.name = "alsa_input.usb-C-Media_Electronics_Inc._USB_PnP_Sound_Device-00.analog-stereo"
-      }
-    ]
-    actions = {
-      update-props = {
-        audio.format = "S16_LE"
-        audio.rate = 48000
         # Following value should be doubled until audio does not cut out or other issues stop occurring
-        api.alsa.period-size = 16
-      }
-    }
-  },
-  {
-    matches = [
-      {
-        # Headphone sink
-        node.name = "alsa_output.pci-0000_00_1f.3.analog-stereo"
-      }
-    ]
-    actions = {
-      update-props = {
-        audio.format = "S32_LE"
-        audio.rate = 48000
-        # Following value should be doubled until audio does not cut out or other issues stop occurring
-        api.alsa.period-size = 16
+        api.alsa.headroom      = 128
       }
     }
   }

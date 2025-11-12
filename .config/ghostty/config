@@ -1,6 +1,6 @@
 # Style
-font-family = "FiraCode Nerd Font Mono"
-font-size = 12
+font-family = "Mononoki Nerd Font Mono"
+font-size = 11
 font-variation = wght=800
 
 # Valid values are:
@@ -11,13 +11,19 @@ font-variation = wght=800
 #   * `block_hollow`
 cursor-style = bar
 
-theme = tokyonight
+theme = Monokai Pro 
+background = #121212
+# colors
+alpha-blending = linear-corrected
+window-padding-x = 4
+window-padding-y = 6
 
 background-opacity = 0.8
 
 window-decoration = false
 confirm-close-surface = false
 gtk-single-instance = true
+gtk-adwaita = false
 
 # keybinds
 # keybind = ctrl+z=close_surface

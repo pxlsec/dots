@@ -1,15 +1,25 @@
-@import "colors.css";
+@import "mocha.css";
 
 * {
-  font-family: FiraCode Nerd Font;
-  font-size: 20px; /* 1 px = 0.05rem */
-  font-weight: 400;
+    font-family: FiraCode Nerd Font;
+    font-size: 20px;
+    color: @text;
+    /* 1 px = 0.05rem */
+    font-weight: 400;
+    background: alpha(@base, 0.8);
+    border-radius: 8px;
 }
 
 window#waybar {
-  color: white;
-  border-radius: 8px;
-  background: transparent;
+    background: transparent;
+}
+
+box {
+    background: transparent;
+}
+
+image {
+    background: transparent;
 }
 
 /* window#waybar.hidden { */
@@ -32,83 +42,47 @@ window#waybar {
 /* 	padding-left: 4px; */
 /* } */
 
+label,
+button {
+    background: transparent;
+}
 
 /* First section */
 #custom-launcher {
-  font-size: 1.2em; /* 24px */
-  /*padding: 1px 4px 1px 13px;*/
-  padding: .0em .2em .0em .5em;
-  color: @on_primary_container;
-
- 	background: alpha(@surface_container, 0.8);
-  border-radius: 8px;
+    font-size: 1.2em;
+    /*padding: 1px 4px 1px 13px;*/
+    padding: .0em .2em .0em .5em;
+    color: @sky;
 }
 
 #workspaces {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.1em 0.05em 0.1em;
-  border-radius: 8px;
+    padding: 0.05em 0.1em 0.05em 0.1em;
 }
 
 #workspaces button {
- border-radius: 8px;
- background-color: transparent;
- color: @text;
+    border: none;
+    box-shadow: none;
 }
 
-#workspaces button.empty {
-
-}
-
-#workspaces button.active {
-  color: @on_primary_container;
+#workspaces button.active * {
+    color: @teal;
 }
 
 #workspaces button.urgent * {
-  color: @on_secondary_container;
+    color: @maroon;
 }
 
-#workspaces button:hover {
-  background: transparent;
-  /* border-bottom: 1.5px solid #6272a4; */
+#wireplumber,
+#mpris,
+#backlight,
+#battery,
+#clock {
+    padding: 0.05em 0.4em 0.05em 0.4em;
 }
 
-#wireplumber {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.4em;
-  border-radius: 8px;
-}
-
-/* Middle section */
-
-#mpris {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.4em;
-  border-radius: 8px;
-}
-
-/* Last section */
-
-#backlight {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.4em;
-  border-radius: 8px;
-}
-
-#upower {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.4em;
-  border-radius: 8px;
-}
-
-#battery {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.4em;
-  border-radius: 8px;
-}
 
 #battery.warning.charging * {
-  color: @text;
+    color: @text;
 }
 
 #battery.critical:not(.charging) {
@@ -122,52 +96,34 @@ window#waybar {
 
 @keyframes blink {
     to {
-        color: @error;
+        color: @maroon;
     }
 }
 
-#network {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.4em;
-  border-radius: 8px;
-}
-
 #tray {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.6em;
-  border-radius: 8px;
+    padding: 0.05em 0.4em 0.05em 0.6em;
 }
 
-#tray menu{
-  background: alpha(@surface_container, 0.8);
-  color: @text;
+#tray>* {
+    background: transparent;
+}
+
+#tray menu {
+    background: transparent;
+}
+
+#tray menu * {
+    background: transparent;
 }
 
 #tray menu menuitem:hover {
-  background: alpha(@on_primary_container, 0.8);
+    background: alpha(@pink, 0.8);
 }
 
 #clock {
- 	background: alpha(@surface_container, 0.8);
-  padding: 0.05em 0.4em 0.05em 0.4em;
-  font-weight: 500;
-  border-radius: 8px;
-}
-
-#clock > * {
-  color: #FF00FF;
-}
-#custom-notification {
-  font-size: 1.2em; /* 24px */
- 	background: alpha(@surface_container, 0.8);
-  color: @on_primary_container;
-  padding: .01em .65em 0em .5em;
-  border-radius: 8px;
+    font-weight: 500;
 }
 
 tooltip {
-	background: alpha(@surface_container, 0.8);
-	border-radius: 8px;
-  font-size: 1.2em;
-	color: @text;
+    font-size: 1.2em;
 }
