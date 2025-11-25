@@ -137,7 +137,7 @@ animations {
 
 render {
   new_render_scheduling = false
-  direct_scanout = 2
+  direct_scanout = 0
 }
 
 misc {
@@ -162,6 +162,9 @@ windowrule = size 30% 30%, tag:pip
 windowrule = move 70% 70%, tag:pip
 # windowrule = move 70%-w-6 70%-h-6, tag:pip # Simply doesn't work
 windowrule = pin, tag:pip
+
+
+windowrule = tag +pip, class:(PureRef)
 
 # Discord 
 windowrule = workspace 5 silent, class:(discord)
