@@ -31,7 +31,7 @@ vim.keymap.set({ "n", "v", "x" }, "k", "gk")
 vim.keymap.set({ "n", "v", "x" }, "<Up>", "gk")
 
 vim.pack.add({
-	{ src = "https://github.com/catppuccin/nvim" },
+	{ src = "https://github.com/folke/tokyonight.nvim" },
 	{ src = "https://github.com/xiyaowong/transparent.nvim" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/onsails/lspkind.nvim" },
@@ -281,11 +281,10 @@ vim.api.nvim_create_autocmd("User", {
 
 -- Colors
 
-require("catppuccin").setup({
-	flavour = "mocha",
-	transparent_background = true,
+require("tokyonight").setup({
+	transparent = true,
 })
-vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme("tokyonight-moon")
 
 vim.opt.fillchars:append("eob: ")
 
@@ -314,7 +313,13 @@ snacks.setup({
 	-- or leave it empty to use the default settings
 	-- refer to the configuration section below
 	-- bigfile = { enabled = true },
-	-- dashboard = { enabled = true },
+	dashboard = {
+		enabled = true,
+		sections = {
+			{ section = "header" },
+			{ section = "keys", gap = 1, padding = 1 },
+		},
+	},
 	-- explorer = { enabled = true },
 	indent = { enabled = true },
 	input = { enabled = true },
@@ -327,6 +332,8 @@ snacks.setup({
 	-- words = { enabled = true },
 })
 
+vim.keymap.set("n", "grr", snacks.picker.lsp_references, { noremap = true, silent = true })
+
 vim.keymap.set("n", "<leader>ff", snacks.picker.files, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>fg", snacks.picker.grep, { noremap = true, silent = true })
 
@@ -338,7 +345,7 @@ vim.keymap.set("n", "<leader>fg", snacks.picker.grep, { noremap = true, silent =
 
 require("lualine").setup({
 	options = {
-		theme = "catppuccin",
+		theme = "auto",
 		component_separators = "",
 		section_separators = { left = "", right = "" },
 	},

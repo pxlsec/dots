@@ -60,6 +60,7 @@ alias "ll"="eza -la --icons=always"
 alias "nv"="nvim"
 alias "o"="xdg-open"
 alias "zigup"="zigup --path-link $HOME/.local/bin/zig"
+alias "Hyprland"="start-hyprland"
 
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"

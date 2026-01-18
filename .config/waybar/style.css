@@ -4,14 +4,25 @@
     font-family: FiraCode Nerd Font;
     font-size: 20px;
     color: @text;
-    /* 1 px = 0.05rem */
     font-weight: 400;
-    background: alpha(@base, 0.8);
     border-radius: 8px;
 }
 
+/* #wireplumber, */
+/* #mpris, */
+/* #backlight, */
+/* #battery, */
+
 window#waybar {
     background: transparent;
+}
+
+widget {
+    background: alpha(@base, 0.8);
+}
+
+widget>* {
+    margin: 0.05em 0.4em 0.05em 0.4em;
 }
 
 box {
@@ -42,28 +53,27 @@ image {
 /* 	padding-left: 4px; */
 /* } */
 
-label,
-button {
-    background: transparent;
-}
 
 /* First section */
 #custom-launcher {
     font-size: 1.2em;
+    padding-right: .4em;
+    /* compensate for nerdfonts */
     /*padding: 1px 4px 1px 13px;*/
-    padding: .0em .2em .0em .5em;
+    /* padding: .0em .2em .0em .5em; */
     color: @sky;
 }
 
-#workspaces {
-    padding: 0.05em 0.1em 0.05em 0.1em;
-}
-
 #workspaces button {
+    font-size: .9rem;
     padding-left: .25em;
     padding-right: .25em;
     border: none;
     box-shadow: none;
+}
+
+#workspaces button:hover {
+    background: none;
 }
 
 #workspaces button.active * {
@@ -71,16 +81,9 @@ button {
 }
 
 #workspaces button.urgent * {
-    color: @maroon;
+    color: @mauve;
 }
 
-#wireplumber,
-#mpris,
-#backlight,
-#battery,
-#clock {
-    padding: 0.05em 0.4em 0.05em 0.4em;
-}
 
 
 #battery.warning.charging * {
@@ -102,21 +105,19 @@ button {
     }
 }
 
-#tray {
-    padding: 0em 0.35em 0em 0.35em;
-}
-
 #tray>* {
     background: transparent;
+    margin: 0em;
 }
 
 #tray>*>* {
-    padding: 0em .15em 0em .15em;
+    padding: 0em .1em 0em .1em;
+    margin: 0em;
     opacity: .85;
 }
 
 #tray menu {
-    background: transparent;
+    background: alpha(@base, 0.8);
 }
 
 #tray menu * {
@@ -132,5 +133,5 @@ button {
 }
 
 tooltip {
-    font-size: 1.2em;
+    font-size: .8em;
 }
