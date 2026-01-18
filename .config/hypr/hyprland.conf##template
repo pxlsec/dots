@@ -8,13 +8,14 @@ monitorv2 {
   bitdepth = 10
   cm = srgb
   position = 0x0
-  sdr_min_luminance = 0.005
-  sdr_max_luminance = 250
-  min_luminance = 0
+  sdrsaturation = 1.4
+  sdrbrightness = 1.1
+sdr_min_luminance = 0.005
+  # sdr_eotf = 2
 }
 {% else %}
   {% if yadm.hostname == "medusa" %}
-  monitor=eDP-1,1920x1080@60,0x0,1
+  monitor=eDP-1,1920xlue is likely between 200 and 2501080@60,0x0,1
   monitor=HDMI-A-1,1920x1080@60,auto,1,mirror,eDP-1
   {% else %}
   monitor=,preferred,auto,1
@@ -28,7 +29,6 @@ $WALLPAPER=swww-daemon # mpvpaper --auto-stop --fork --mpv-options "--input-ipc-
 $TERM=kitty
 $BROWSER=zen-browser
 $MUSIC=spotify
-$DISCORD=discord
 
 # Startup apps
 exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
@@ -40,7 +40,7 @@ exec-once = $BAR
 exec-once = $NOTIFICATIONS
 exec-once = systemctl --user start opentabletdriver.service 
 exec-once = $MUSIC
-exec-once = $DISCORD
+exec-once = discord
 exec-once = $BROWSER
 exec-once = steam -silent
 
@@ -137,12 +137,11 @@ animations {
 
 render {
   new_render_scheduling = false
-  direct_scanout = 0
+  direct_scanout = 2
 }
 
 misc {
    vrr = 3
-   key_press_enables_dpms = true
    enable_anr_dialog = false
    disable_hyprland_logo = true
    disable_splash_rendering = true
@@ -152,65 +151,61 @@ misc {
 ## Rules are evaluated top to bottom, so the order they’re written in does matter!
 
 ## Zen Browser 
-windowrule = workspace 2 silent, class:(zen)
-windowrule = content video, class:(zen)
+windowrule = match:class zen, workspace 2 silent
+windowrule = match:class zen, content video
 
-windowrule = tag +pip, class:(zen), title:(Picture-in-Picture)
+windowrule = match:class zen, match:title Picture-in-Picture, tag +pip
 # windowrule = tag +pip, class:(discord), initialTitle:(Discord Popout) # Discord sets initialTitle atfer the window has spawned
-windowrule = float, tag:pip
-windowrule = size 30% 30%, tag:pip
-windowrule = move 70% 70%, tag:pip
+windowrule = match:tag pip, float on
+windowrule = match:tag pip, size 30% 30%
+windowrule = match:tag pip, move 70% 70%
 # windowrule = move 70%-w-6 70%-h-6, tag:pip # Simply doesn't work
-windowrule = pin, tag:pip
+windowrule = match:tag pip, pin on
 
 
-windowrule = tag +pip, class:(PureRef)
+windowrule = match:class PureRef, tag +pip
 
 # Discord 
-windowrule = workspace 5 silent, class:(discord)
+windowrule = match:class discord, workspace 5 silent
 
 # Spotify
-windowrule = workspace 5 silent, class:(Spotify)
+windowrule = match:class spotify, workspace 5 silent
 
 # MPV
-windowrule = float, class:(mpv)
-windowrule = size 1280 720, class:(mpv)
+windowrule = match:class mpv, float on
+windowrule = match:class mpv, size 1280 720
 
 # wofi
-layerrule = blur, waybar
-layerrule = blur, rofi
+layerrule = match:namespace waybar, blur on
+layerrule = match:namespace rofi, blur on
 
-layerrule = ignorezero, waybar
-layerrule = ignorezero, rofi
+layerrule = match:namespace waybar, ignore_alpha .75
+layerrule = match:namespace rofi, ignore_alpha .75
 
 # Steam
-windowrule = workspace 1 silent, class:(steam)
-windowrule = workspace 1 silent, title:(Steam) # The initial update prompt has no class.
+windowrule = match:class steam, workspace 1 silent, 
+windowrule = match:title Steam, workspace 1 silent # The initial update prompt has no class.
 
 # Games
-windowrule = content game, class:(gamescope)
-windowrule = content game, class:(steam_app_\d+) # Only works for x11 driver
-windowrule = content game, class:(cs2)
-windowrule = content game, title:(Minecraft.*)
-windowrule = content game, class:(osu!)
+windowrule = match:class gamescope, content game
+windowrule = match:class steam_app_\d+, content game # Only works for x11 driver
+windowrule = match:class cs2, content game
+windowrule = match:title ^[Mm]inecraft.*, content game
+windowrule = match:class osu!, content game
 
-windowrule = immediate, content:game
-windowrule = workspace 1 silent, content:game
-windowrule = idleinhibit focus, content:game
+windowrule = match:content game, immediate on
+windowrule = match:content game, workspace 1 silent
+windowrule = match:content game, idle_inhibit focus
 
 # Pop ups
-windowrule = float, class:(yad)
-windowrule = float, class:(zenity)
+windowrule = match:class yad, float on
+windowrule = match:class zenity, float on
 
 # Lunar
-windowrule = float, title:(lunar)
+windowrule = match:title lunar, float on
 
 # keybinds
 source = ~/.config/hypr/keybinds.conf
-
-experimental {
-  xx_color_management_v4 = true
-}
 
 debug {
   disable_logs = true
