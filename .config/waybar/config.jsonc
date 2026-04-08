@@ -17,6 +17,7 @@
 
     "hyprland/workspaces": {
     	"all-outputs": true,
+        "move-to-monitor": true,
     	"format": "{icon}",
         "format-icons": {
             "1": "壱",
@@ -41,29 +42,18 @@
       "tooltip": false
     },
 
-    "pulseaudio": {
-      // "scroll-step": 1, // %, can be a float
-      "format": "{icon} {volume}%\n{format_source}",
-      "format-bluetooth": "{icon} {volume}% {format_source}",
-      "format-bluetooth-muted": " {format_source}",
-      "format-muted": " {format_source}",
-      "format-source": " {volume}%",
-      "format-source-muted": "",
-      "rotate": 90,
-      "format-icons": {
-        "headphone": "",
-        "hands-free": "",
-        "headset": "🎧",
-        "phone": "",
-        "portable": "",
-        "car": "",
-        "default": ["", "", ""]
-
-      },
-      "on-click": "pavucontrol"
-    },
-
 // middle section
+    "mpd": {
+        "server": "/run/user/1000/mpd/socket",
+        "format": "{artist} - {title}",
+        "format-paused": "<i>{artist} - {title}</i>",
+        "format-stopped": "",
+
+        "tooltip": false,
+        "on-click": "rmpc togglepause",
+        "on-scroll-up": "rmpc volume +2",
+        "on-scroll-down": "rmpc volume -2"
+    },
     "mpris": {
       "player": "spotify",
 	      "format": "{status_icon} {dynamic}",
@@ -73,8 +63,8 @@
 	      	"paused": "",
           "stopped": ""
 	      },
-        "on-scroll-up": "playerctl -p 'spotify' volume 0.05+",
-        "on-scroll-down": "playerctl -p 'spotify' volume 0.05-",
+        "on-scroll-up": "playerctl -p 'spotify' volume 0.02+",
+        "on-scroll-down": "playerctl -p 'spotify' volume 0.02-",
         "tooltip": false
     },
 
@@ -102,40 +92,6 @@
         //"format-alt": "{time}",
     },
 
-    "network": {
-    "format": "{ifname}",
-    "format-wifi": "󰖩",
-    "format-ethernet": "󰈁",
-    "format-disconnected": "󰈂", //An empty format will hide the module.
-    "tooltip-format": "{ifname} 󰊗",
-    "tooltip-format-wifi": " {ifname} | {essid} | ({signalStrength}%)",
-    "tooltip-format-ethernet": " {ifname} |  {bandwidthDownBits} |  {bandwidthUpBits}",
-    "tooltip-format-disconnected": "Disconnected",
-    "max-length": 50
-    },
-
-    // PS controller
-    "upower": {
-        "native-path": "ps-controller-battery-58:10:31:80:ef:8d",
-        "show-icon": false,
-        "format": "󰊴 {percentage}",
-        "on-click": "dualsensectl power-off",
-        "hide-if-empty": true,
-        "tooltip": false
-    },
-
-    "power-profiles-daemon": {
-      "format": "{icon}",
-      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-      "tooltip": true,
-      "format-icons": {
-        "default": "",
-        "performance": "",
-        "balanced": "",
-        "power-saver": ""
-      }
-    },
-
     "tray": {
         "icon-size": 24,
         "spacing":2
@@ -143,27 +99,7 @@
 
     "clock": {
       "format": " {:%H:%M}",
+      "format-alt": " {:%Y/%m/%d}",
       "tooltip": false
-},
-
-  "custom/notification": {
-    "tooltip": false,
-    "format": "{icon}",
-    "format-icons": {
-       "notification": "󱥂",
-       "none": "󰍥",
-       "dnd-notification": "󱙎",
-       "dnd-none": "󱙎",
-       "inhibited-notification": "󱥂",
-       "inhibited-none": "󰍥",
-       "dnd-inhibited-notification": "󱙎",
-       "dnd-inhibited-none": "󱙎"
-    },
-    "return-type": "json",
-    "exec-if": "which swaync-client",
-    "exec": "swaync-client -swb",
-    "on-click": "swaync-client -t -sw",
-    "on-click-right": "swaync-client -d -sw",
-    "escape": true
-  }
+    }
 }

@@ -1,4 +1,5 @@
 source = ~/.config/hypr/colors.conf
+source = variables.conf
 
 # Monitors
 {% if yadm.hostname == "wyvern" %}
@@ -6,7 +7,7 @@ monitorv2 {
   output = DP-3
   mode = 2560x1440@239.97200
   bitdepth = 10
-  cm = srgb
+  cm = dcip3
   position = 0x0
   sdrsaturation = 1.4
   sdrbrightness = 1.1
@@ -25,7 +26,7 @@ sdr_min_luminance = 0.005
 # Default apps
 $BAR=waybar
 $NOTIFICATIONS=dunst
-$WALLPAPER=swww-daemon # mpvpaper --auto-stop --fork --mpv-options "--input-ipc-server=/tmp/mpv-socket --no-audio --loop-playlist --speed=0.66 --save-position-on-quit=no" DP-1 ~/Wallpapers/Live/mylivewallpapers-com-Cyberpunk-Oni-Mask-Babe-4K-EDIT.mp4
+$WALLPAPER=mpvpaper --auto-pause --fork --mpv-options "--no-audio --loop-playlist --save-position-on-quit=no --panscan=1" all ~/Pictures/Wallpapers/Live/hydrangeas-rain.3840x2160.mp4
 $TERM=kitty
 $BROWSER=zen-browser
 $MUSIC=spotify --disable-gpu
@@ -142,6 +143,9 @@ misc {
    disable_hyprland_logo = true
    disable_splash_rendering = true
 }
+
+workspace = 2, monitor:$PRIMARY, default:true
+workspace = 5, monitor:$SECONDARY, default:true
 
 # Windowrules
 ## Rules are evaluated top to bottom, so the order they’re written in does matter!

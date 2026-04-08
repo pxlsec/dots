@@ -1,6 +1,8 @@
 [global]
   font = "FiraCode Nerd Font"
 
+  follow = mouse
+
 	# Sort messages by urgency
 	sort = yes
 
