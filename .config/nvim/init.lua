@@ -1,4 +1,9 @@
+-- Options --
 vim.g.mapleader = " "
+vim.keymap.set({ "n" }, "<leader>", "<Nop>", { silent = true })
+
+vim.keymap.set('i', '<F13>', '<Esc>', { desc = "Caps Lock to Normal Mode" }) -- Note that caps lock is configured to emit <F13> in hyprland.
+
 vim.o.mouse = ""
 vim.o.termguicolors = true
 vim.o.number = true
@@ -15,36 +20,7 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-vim.o.foldcolumn = "0" -- '0' is not bad
-vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-vim.wo[0][0].foldmethod = 'expr'
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 1
-vim.opt.foldnestmax = 2
-
-function CustomFoldText()
-    local fs = vim.v.foldstart
-    local fe = vim.v.foldend
-
-    local line = vim.api.nvim_buf_get_lines(0, fs - 1, fs, false)[1]
-    if not line then return " 󰁂 Error reading line" end
-
-    local line_count = fe - fs + 1
-
-    return line .. "  󰁂 " .. line_count
-end
-
--- Apply it
-vim.opt.foldtext = "v:lua.CustomFoldText()"
-
--- why tf does snacks.dashboard override my settings!?
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-    group = ts_fold_gorup,
-    callback = function()
-        vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-        vim.wo[0][0].foldmethod = 'expr'
-    end
-})
+vim.o.foldcolumn = "0"
 
 vim.keymap.set({ "n", "v", "x" }, "<leader>cf", vim.lsp.buf.format)
 vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y<CR>')
@@ -56,34 +32,45 @@ vim.keymap.set({ "n", "v", "x" }, "<Down>", "gj")
 vim.keymap.set({ "n", "v", "x" }, "k", "gk")
 vim.keymap.set({ "n", "v", "x" }, "<Up>", "gk")
 
+vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h")
+vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j")
+vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k")
+vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l")
+
 vim.keymap.set({ "n" }, "<leader>U", vim.pack.update)
 
+vim.keymap.set("n", "<leader>r", function()
+    -- Clear the cache for your custom modules
+    -- Replace 'user' with the name of your config folder
+    for name, _ in pairs(package.loaded) do
+        if name:match('^user') then
+            package.loaded[name] = nil
+        end
+    end
+
+    dofile(vim.env.MYVIMRC)
+
+    print("Reloaded config!")
+end)
+
+-- Aerial --
 vim.pack.add({
-    { src = "https://github.com/catppuccin/nvim.git" },
-    { src = "https://github.com/xiyaowong/transparent.nvim" },
-    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-    { src = "https://github.com/onsails/lspkind.nvim" },
-    { src = "https://github.com/neovim/nvim-lspconfig" },
-    { src = "https://github.com/mason-org/mason.nvim" },
-    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-    { src = "https://github.com/nvim-lualine/lualine.nvim" },
-    { src = "https://github.com/b0o/incline.nvim" },
-    { src = "https://github.com/lewis6991/gitsigns.nvim" },
-    { src = "https://github.com/saghen/blink.cmp",                version = vim.version.range("^1") },
-    { src = "https://github.com/L3MON4D3/LuaSnip",                version = vim.version.range("^2") },
-    { src = "https://github.com/j-hui/fidget.nvim" },
-    { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/MunifTanjim/nui.nvim" },
-    { src = "https://github.com/folke/snacks.nvim" },
-    { src = "https://github.com/folke/noice.nvim" },
-    { src = "https://github.com/mfussenegger/nvim-dap" },
-    { src = "https://github.com/jay-babu/mason-nvim-dap.nvim" },
-    { src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
+    { src = "https://github.com/stevearc/aerial.nvim.git" },
+})
+require("aerial").setup({
+    layout = {
+        placement = "edge",
+        min_width = 20,
+    }
 })
 
--- Treesitter
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+
+-- Treesitter --
+vim.pack.add({
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+})
+
 vim.api.nvim_create_autocmd("PackChanged", {
     callback = function(args)
         if args.data.kind == "update" and args.data.spec.name == "nvim-treesitter" then
@@ -92,6 +79,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
         end
     end,
 })
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "<filetype>" },
     callback = function()
@@ -102,7 +90,11 @@ vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
 require 'nvim-treesitter'.install { 'lua', 'c', 'zig' }
 
--- LSP settings
+-- Mason
+vim.pack.add({
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
+    { src = "https://github.com/mason-org/mason.nvim" },
+})
 
 require("mason").setup({
     ui = {
@@ -112,6 +104,12 @@ require("mason").setup({
             package_uninstalled = "󰄱",
         },
     },
+})
+
+-- LSP
+vim.pack.add({
+    { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
 })
 require("mason-lspconfig").setup()
 vim.keymap.set("n", "<leader>tm", ":Mason<CR>")
@@ -130,27 +128,16 @@ vim.lsp.config("zls", {
     build_on_save_args = { "-fno-bin", "-fincremental" },
 })
 
-require("mason-nvim-dap").setup({
-    -- ensure_installed = {'stylua', 'jq'},
-    handlers = {}, -- sets up dap in the predefined manner
-})
-
-require("nvim-dap-virtual-text").setup({
-    virt_text_win_col = 80,
-    highlight_changed_variables = true,
-})
-
 -- vim.lsp.enable({ "lua_ls", "clangd", "zls" })
--- vim.lsp.config("lua_ls", {
--- 	settings = {
--- 		Lua = {
--- 			workspace = {
--- 				library = vim.api.nvim_get_runtime_file("", true),
--- 			},
--- 		},
--- 	},
---})
-vim.opt.completeopt:append("noselect")
+vim.lsp.config("lua_ls", {
+    settings = {
+        Lua = {
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+        },
+    },
+})
 
 vim.api.nvim_create_autocmd("BufWritePre", {
     callback = function()
@@ -162,6 +149,31 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         end
     end,
 })
+
+
+-- DAP --
+vim.pack.add({
+    { src = "https://github.com/mfussenegger/nvim-dap" },
+    { src = "https://github.com/jay-babu/mason-nvim-dap.nvim" },
+    { src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
+})
+require("mason-nvim-dap").setup()
+
+require("nvim-dap-virtual-text").setup({
+    virt_text_win_col = 80,
+    highlight_changed_variables = true,
+})
+
+
+-- Blink --
+vim.pack.add({
+    { src = "https://github.com/onsails/lspkind.nvim" },
+    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
+    { src = "https://github.com/saghen/blink.cmp",           version = vim.version.range("^1") },
+    { src = "https://github.com/L3MON4D3/LuaSnip",           version = vim.version.range("^2") },
+})
+
+vim.opt.completeopt:append("noselect")
 
 vim.diagnostic.config({
     underline = true,
@@ -261,13 +273,11 @@ require("blink.cmp").setup({
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { noremap = true, silent = true })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
 
--- Misc
-require("fidget").setup({
-    notification = {
-        override_vim_notify = true, -- Automatically override vim.notify() with Fidget
-    },
-})
 
+-- gitsigns --
+vim.pack.add({
+    { src = "https://github.com/lewis6991/gitsigns.nvim" },
+})
 require("gitsigns").setup({
     signs = {
         add = { text = "┃" },
@@ -287,7 +297,10 @@ require("gitsigns").setup({
     },
 })
 
--- Nav
+-- Oil --
+vim.pack.add({
+    { src = "https://github.com/stevearc/oil.nvim" },
+})
 local oil = require("oil")
 oil.setup({
     default_file_explorer = false, -- Breaks spellfile downloading
@@ -308,14 +321,22 @@ vim.api.nvim_create_autocmd("User", {
     end,
 })
 
--- Colors
-
-require("catppuccin").setup({
-    transparent_background = true,
+-- Theme
+vim.pack.add({
+    { src = "https://github.com/nyoom-engineering/oxocarbon.nvim.git" },
+    { src = "https://github.com/xiyaowong/transparent.nvim" },
 })
-vim.cmd.colorscheme("catppuccin-macchiato")
+
+vim.cmd.colorscheme("oxocarbon")
 
 vim.opt.fillchars:append("eob: ")
+
+-- UI
+vim.pack.add({
+    { src = "https://github.com/MunifTanjim/nui.nvim" },
+    { src = "https://github.com/folke/snacks.nvim" },
+    { src = "https://github.com/folke/noice.nvim" },
+})
 
 require("noice").setup({
     lsp = {
@@ -366,12 +387,9 @@ vim.keymap.set("n", "grr", snacks.picker.lsp_references, { noremap = true, silen
 vim.keymap.set("n", "<leader>ff", snacks.picker.files, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>fg", snacks.picker.grep, { noremap = true, silent = true })
 
--- require("indentmini").setup({
---     char = '┃'
--- })
--- vim.cmd.highlight('IndentLine guifg=#2B2D3A')
--- vim.cmd.highlight('IndentLineCurrent guifg=#468a9e')
-
+vim.pack.add({
+    { src = "https://github.com/nvim-lualine/lualine.nvim" },
+})
 require("lualine").setup({
     options = {
         theme = "auto",
@@ -400,7 +418,10 @@ require("lualine").setup({
     extensions = {},
 })
 
--- Incline config
+-- Incline --
+vim.pack.add({
+    { src = "https://github.com/b0o/incline.nvim" },
+})
 local helpers = require("incline.helpers")
 local devicons = require("nvim-web-devicons")
 require("incline").setup({
