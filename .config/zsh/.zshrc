@@ -58,6 +58,7 @@ zstyle ':completion:*:descriptions' format '[%d]'
 alias "ls"="eza --icons=always"
 alias "ll"="eza -la --icons=always"
 alias "nv"="nvim"
+alias "lg"="lazygit"
 alias "o"="xdg-open"
 alias "Hyprland"="start-hyprland"
 

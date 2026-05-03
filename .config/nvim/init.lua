@@ -1,14 +1,13 @@
 -- Options --
 vim.g.mapleader = " "
-vim.keymap.set({ "n" }, "<leader>", "<Nop>", { silent = true })
-
-vim.keymap.set('i', '<F13>', '<Esc>', { desc = "Caps Lock to Normal Mode" }) -- Note that caps lock is configured to emit <F13> in hyprland.
 
 vim.o.mouse = ""
 vim.o.termguicolors = true
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.signcolumn = "yes"
+vim.o.scrolloff = 10
+
+vim.o.signcolumn = "yes:1"
 vim.o.winborder = "rounded"
 vim.o.laststatus = 3
 vim.o.wrap = false
@@ -19,13 +18,66 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 
+vim.o.updatetime = 250
+
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.o.foldcolumn = "0"
+
+vim.api.nvim_create_autocmd("CursorHold", {
+    callback = function()
+        -- Don't show in insert mode
+        if vim.api.nvim_get_mode().mode ~= "n" then
+            return
+        end
+
+        -- Only show if there's actually a diagnostic under cursor
+        local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line(".") - 1 })
+        if vim.tbl_isempty(diagnostics) then
+            return
+        end
+
+        vim.diagnostic.open_float(nil, {
+            focusable = false,
+            border = "rounded",
+            source = "if_many",
+            scope = "cursor",
+        })
+    end,
+})
+
+vim.diagnostic.config({
+    underline = true,
+    signs = {
+        active = true,
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.HINT] = "󰟃",
+            [vim.diagnostic.severity.INFO] = "",
+        },
+    },
+    virtual_text = false,
+    float = {
+        -- border = "single",
+        format = function(diagnostic)
+            return string.format(
+                "%s (%s) [%s]",
+                diagnostic.message,
+                diagnostic.source,
+                diagnostic.code or diagnostic.user_data.lsp.code
+            )
+        end,
+    },
+})
+
+vim.keymap.set({ "n" }, "<leader>", "<Nop>", { silent = true })
+vim.keymap.set({ "i", "v", "x" }, "<F13>", "<Esc>", { desc = "Caps Lock to Normal Mode" }) -- Note that caps lock is configured to emit <F13> in hyprland.
+vim.keymap.set({ "n" }, "<F13>", "<cmd>noh<CR>")
 
 vim.keymap.set({ "n", "v", "x" }, "<leader>cf", vim.lsp.buf.format)
 vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y<CR>')
 vim.keymap.set({ "n", "v", "x" }, "<leader>d", '"+d<CR>')
-vim.keymap.set({ "n", "v", "x" }, "<leader>T", ":TransparentToggle<CR>")
+vim.keymap.set({ "n", "v", "x" }, "<leader>T", "<cmd>TransparentToggle<CR>")
 
 vim.keymap.set({ "n", "v", "x" }, "j", "gj")
 vim.keymap.set({ "n", "v", "x" }, "<Down>", "gj")
@@ -37,13 +89,12 @@ vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j")
 vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k")
 vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l")
 
-vim.keymap.set({ "n" }, "<leader>U", vim.pack.update)
-
-vim.keymap.set("n", "<leader>r", function()
+vim.keymap.set({ "n" }, "<leader>nu", vim.pack.update)
+vim.keymap.set({ "n" }, "<leader>nr", function()
     -- Clear the cache for your custom modules
-    -- Replace 'user' with the name of your config folder
+    -- Replace "user" with the name of your config folder
     for name, _ in pairs(package.loaded) do
-        if name:match('^user') then
+        if name:match("^user") then
             package.loaded[name] = nil
         end
     end
@@ -53,25 +104,18 @@ vim.keymap.set("n", "<leader>r", function()
     print("Reloaded config!")
 end)
 
--- Aerial --
-vim.pack.add({
-    { src = "https://github.com/stevearc/aerial.nvim.git" },
-})
-require("aerial").setup({
-    layout = {
-        placement = "edge",
-        min_width = 20,
-    }
-})
-
-vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
-
+----------------
 -- Treesitter --
+----------------
 vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 })
 
-vim.api.nvim_create_autocmd("PackChanged", {
+require("nvim-treesitter").install({ "comment", "regex", "query", "vimdoc", "markdown", "markdown_inline", "lua", "c",
+    "zig" })
+
+-- Auto update parsers on vim.pack.update()
+vim.api.nvim_create_autocmd("packchanged", {
     callback = function(args)
         if args.data.kind == "update" and args.data.spec.name == "nvim-treesitter" then
             vim.cmd(":TSUpdate")
@@ -81,16 +125,29 @@ vim.api.nvim_create_autocmd("PackChanged", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "<filetype>" },
-    callback = function()
-        vim.treesitter.start()
+    pattern = { "*" },
+    callback = function(args)
+        local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+
+        -- Return if lang = nil
+        if not lang then return end
+
+        -- Check if the parser is insatlled
+        if not vim.treesitter.language.add(lang) then
+            -- If not installed, check if it can be insatlled and install
+            local configs = require("nvim-treesitter.parsers")
+            if not configs[lang] ~= nil then return end
+            if not require("nvim-treesitter").install(lang) then return end
+        end
+
+        -- Start the treesitter!
+        vim.treesitter.start(args.buf, lang)
     end,
 })
-vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-require 'nvim-treesitter'.install { 'lua', 'c', 'zig' }
-
--- Mason
+-----------
+-- Mason --
+-----------
 vim.pack.add({
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/mason-org/mason.nvim" },
@@ -106,19 +163,21 @@ require("mason").setup({
     },
 })
 
--- LSP
+---------
+-- LSP --
+---------
 vim.pack.add({
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
 })
 require("mason-lspconfig").setup()
-vim.keymap.set("n", "<leader>tm", ":Mason<CR>")
+vim.keymap.set("n", "<leader>tm", "<cmd>Mason<CR>")
 
 vim.api.nvim_create_autocmd("PackChanged", {
     callback = function(args)
         if args.data.kind == "update" and args.data.spec.name == "mason" then
-            vim.cmd(":MasonUpdate")
             vim.notify("Updating LSP Servers")
+            vim.cmd(":MasonUpdate")
         end
     end,
 })
@@ -150,8 +209,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     end,
 })
 
-
+---------
 -- DAP --
+---------
 vim.pack.add({
     { src = "https://github.com/mfussenegger/nvim-dap" },
     { src = "https://github.com/jay-babu/mason-nvim-dap.nvim" },
@@ -165,7 +225,9 @@ require("nvim-dap-virtual-text").setup({
 })
 
 
--- Blink --
+----------------
+-- Completion --
+----------------
 vim.pack.add({
     { src = "https://github.com/onsails/lspkind.nvim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
@@ -174,31 +236,6 @@ vim.pack.add({
 })
 
 vim.opt.completeopt:append("noselect")
-
-vim.diagnostic.config({
-    underline = true,
-    signs = {
-        active = true,
-        text = {
-            [vim.diagnostic.severity.ERROR] = "",
-            [vim.diagnostic.severity.WARN] = "",
-            [vim.diagnostic.severity.HINT] = "󰟃",
-            [vim.diagnostic.severity.INFO] = "",
-        },
-    },
-    virtual_text = false,
-    float = {
-        -- border = "single",
-        format = function(diagnostic)
-            return string.format(
-                "%s (%s) [%s]",
-                diagnostic.message,
-                diagnostic.source,
-                diagnostic.code or diagnostic.user_data.lsp.code
-            )
-        end,
-    },
-})
 
 require("blink.cmp").setup({
     keymap = {
@@ -273,55 +310,9 @@ require("blink.cmp").setup({
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { noremap = true, silent = true })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
 
-
--- gitsigns --
-vim.pack.add({
-    { src = "https://github.com/lewis6991/gitsigns.nvim" },
-})
-require("gitsigns").setup({
-    signs = {
-        add = { text = "┃" },
-        change = { text = "┃" },
-        delete = { text = "┃" },
-        topdelete = { text = "┃" },
-        changedelete = { text = "┃" },
-        untracked = { text = "┃" },
-    },
-    signs_staged = {
-        add = { text = "┃" },
-        change = { text = "┃" },
-        delete = { text = "┃" },
-        topdelete = { text = "┃" },
-        changedelete = { text = "┃" },
-        untracked = { text = "┃" },
-    },
-})
-
--- Oil --
-vim.pack.add({
-    { src = "https://github.com/stevearc/oil.nvim" },
-})
-local oil = require("oil")
-oil.setup({
-    default_file_explorer = false, -- Breaks spellfile downloading
-    float = {
-        max_width = 0.6,
-        max_height = 0.6,
-    },
-})
-vim.keymap.set("n", "<leader>fe", oil.toggle_float, { noremap = true, silent = true })
-
--- folke/rename integration
-vim.api.nvim_create_autocmd("User", {
-    pattern = "OilActionsPost",
-    callback = function(event)
-        if event.data.actions[1].type == "move" then
-            Snacks.rename.on_rename_file(event.data.actions[1].src_url, event.data.actions[1].dest_url)
-        end
-    end,
-})
-
--- Theme
+-----------
+-- Theme --
+-----------
 vim.pack.add({
     { src = "https://github.com/nyoom-engineering/oxocarbon.nvim.git" },
     { src = "https://github.com/xiyaowong/transparent.nvim" },
@@ -331,7 +322,9 @@ vim.cmd.colorscheme("oxocarbon")
 
 vim.opt.fillchars:append("eob: ")
 
--- UI
+--------
+-- UI --
+--------
 vim.pack.add({
     { src = "https://github.com/MunifTanjim/nui.nvim" },
     { src = "https://github.com/folke/snacks.nvim" },
@@ -418,6 +411,29 @@ require("lualine").setup({
     extensions = {},
 })
 
+-- gitsigns --
+vim.pack.add({
+    { src = "https://github.com/lewis6991/gitsigns.nvim" },
+})
+require("gitsigns").setup({
+    signs = {
+        add = { text = "┃" },
+        change = { text = "┃" },
+        delete = { text = "┃" },
+        topdelete = { text = "┃" },
+        changedelete = { text = "┃" },
+        untracked = { text = "┃" },
+    },
+    signs_staged = {
+        add = { text = "┃" },
+        change = { text = "┃" },
+        delete = { text = "┃" },
+        topdelete = { text = "┃" },
+        changedelete = { text = "┃" },
+        untracked = { text = "┃" },
+    },
+})
+
 -- Incline --
 vim.pack.add({
     { src = "https://github.com/b0o/incline.nvim" },
@@ -449,4 +465,49 @@ require("incline").setup({
             " ",
         }
     end,
+})
+
+-- Aerial --
+vim.pack.add({
+    { src = "https://github.com/stevearc/aerial.nvim.git" },
+})
+require("aerial").setup({
+    layout = {
+        placement = "edge",
+        min_width = 20,
+    }
+})
+
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+
+-- Oil --
+vim.pack.add({
+    { src = "https://github.com/stevearc/oil.nvim" },
+})
+local oil = require("oil")
+oil.setup({
+    default_file_explorer = false, -- Breaks spellfile downloading
+    float = {
+        max_width = 0.6,
+        max_height = 0.6,
+    },
+})
+vim.keymap.set("n", "<leader>fe", oil.toggle_float, { noremap = true, silent = true })
+
+-- folke/rename integration
+vim.api.nvim_create_autocmd("User", {
+    pattern = "OilActionsPost",
+    callback = function(event)
+        if event.data.actions[1].type == "move" then
+            Snacks.rename.on_rename_file(event.data.actions[1].src_url, event.data.actions[1].dest_url)
+        end
+    end,
+
+})
+
+vim.pack.add({
+    { src = "https://github.com/andweeb/presence.nvim" }
+})
+
+require("presence").setup({
 })

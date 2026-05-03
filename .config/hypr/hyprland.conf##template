@@ -32,7 +32,7 @@ exec-once = awww-daemon
 exec-once = waybar
 exec-once = dunst
 exec-once = systemctl --user start opentabletdriver.service 
-exec-once = spotify --disable-gpu
+exec-once = spotify
 exec-once = discord
 exec-once = $BROWSER
 exec-once = steam -silent
@@ -60,6 +60,8 @@ input {
     kb_options = caps:none,fkeys:basic_13-24
     kb_rules =
 
+    repeat_rate = 30
+    repeat_delay = 250
     touchpad {
       natural_scroll = yes
       disable_while_typing = yes
@@ -106,7 +108,7 @@ decoration {
     passes = 3
     noise = 0.06
     contrast = 0.9
-    brightness = 0.9
+    brightness = 0.6
 popups = true
   }
   shadow {
@@ -162,7 +164,7 @@ windowrule = match:class PureRef, tag +pip
 windowrule = match:class discord, workspace 5 silent
 
 # Spotify
-windowrule = match:class spotify, workspace 5 silent
+windowrule = match:class Spotify, workspace 5 silent
 
 # MPV
 windowrule = match:class mpv, float on
