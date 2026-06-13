@@ -23,9 +23,6 @@ export GOPATH="$XDG_DATA_HOME"/go
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle 
 
-# ZVM
-export PATH="$HOME"/.zvm/bin:"$PATH"
-
 # Python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 
