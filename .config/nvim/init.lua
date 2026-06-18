@@ -74,7 +74,6 @@ vim.keymap.set({ "n" }, "<leader>", "<Nop>", { silent = true })
 vim.keymap.set({ "i", "v", "x" }, "<F13>", "<Esc>", { desc = "Caps Lock to Normal Mode" }) -- Note that caps lock is configured to emit <F13> in hyprland.
 vim.keymap.set({ "n" }, "<F13>", "<cmd>noh<CR>")
 
-vim.keymap.set({ "n", "v", "x" }, "<leader>cf", vim.lsp.buf.format)
 vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y<CR>')
 vim.keymap.set({ "n", "v", "x" }, "<leader>d", '"+d<CR>')
 vim.keymap.set({ "n", "v", "x" }, "<leader>T", "<cmd>TransparentToggle<CR>")
@@ -221,17 +220,34 @@ vim.lsp.config("lua_ls", {
 
 vim.lsp.enable({ "lua_ls", "zls" })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-	callback = function()
-		local mode = vim.api.nvim_get_mode().mode
-		local filetype = vim.bo.filetype
-		if vim.bo.modified == true and mode == "n" and filetype ~= "oil" then
-			vim.cmd("lua vim.lsp.buf.format()")
-		else
-		end
-	end,
+----------------
+-- Formatters --
+----------------
+vim.pack.add({
+	{ src = "https://github.com/stevearc/conform.nvim.git" },
 })
 
+require("conform").setup({
+    default_format_opts = {
+        lsp_format = "fallback",
+    },
+	formatters_by_ft = {
+		lua = { "stylua" },
+		python = { "isort", "black" },
+		javascript = { "prettierd", "prettier", stop_after_first = true },
+		css = { "prettierd", "prettier", stop_after_first = true },
+		html = { "prettierd", "prettier", stop_after_first = true },
+		json = { "prettierd", "prettier", stop_after_first = true },
+		htmlangular = { "prettierd", "prettier", stop_after_first = true },
+		sh = { "shfmt" },
+	},
+})
+
+vim.keymap.set({ "n", "v", "x" }, "<leader>cf", function()
+	require("conform").format({
+		async = true,
+	})
+end)
 ---------
 -- DAP --
 ---------
