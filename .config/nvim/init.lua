@@ -76,6 +76,7 @@ vim.keymap.set({ "n" }, "<F13>", "<cmd>noh<CR>")
 
 vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y<CR>')
 vim.keymap.set({ "n", "v", "x" }, "<leader>d", '"+d<CR>')
+vim.keymap.set({ "n", "v", "x" }, "<leader>ca", vim.lsp.buf.code_action)
 vim.keymap.set({ "n", "v", "x" }, "<leader>T", "<cmd>TransparentToggle<CR>")
 
 vim.keymap.set({ "n", "v", "x" }, "j", "gj")
@@ -208,16 +209,6 @@ vim.lsp.config["zls"] = {
 	},
 }
 
-vim.lsp.config("lua_ls", {
-	settings = {
-		Lua = {
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-		},
-	},
-})
-
 vim.lsp.enable({ "lua_ls", "zls" })
 
 ----------------
@@ -228,9 +219,9 @@ vim.pack.add({
 })
 
 require("conform").setup({
-    default_format_opts = {
-        lsp_format = "fallback",
-    },
+	default_format_opts = {
+		lsp_format = "fallback",
+	},
 	formatters_by_ft = {
 		lua = { "stylua" },
 		python = { "isort", "black" },
@@ -310,67 +301,13 @@ vim.pack.add({
 	{ src = "https://github.com/onsails/lspkind.nvim" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("^1") },
+	{ src = "https://github.com/saghen/blink.indent"},
 	{ src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("^2") },
 })
 
 require("blink.cmp").setup({
 	keymap = {
-		preset = "none",
-		["<C-space>"] = { "show_and_insert", "hide" },
-
-		["<Tab>"] = {
-			function(cmp)
-				if cmp.is_active() then
-					return cmp.select_next()
-				end
-			end,
-
-			"snippet_forward",
-			"fallback",
-		},
-
-		["<S-Tab>"] = {
-			function(cmp)
-				if cmp.is_active() then
-					return cmp.select_prev()
-				end
-			end,
-
-			"snippet_backward",
-			"fallback",
-		},
-
-		["<CR>"] = {
-			function(cmp)
-				if cmp.is_menu_visible() then
-					return cmp.select_and_accept()
-				end
-			end,
-
-			"fallback",
-		},
-
-		["j"] = {
-			function(cmp)
-				if cmp.is_documentation_visible() then
-					return cmp.scroll_documentation_up()
-				end
-			end,
-
-			"fallback",
-		},
-
-		["k"] = {
-			function(cmp)
-				if cmp.is_documentation_visible() then
-					return cmp.scroll_documentation_down()
-				end
-			end,
-
-			"fallback",
-		},
-
-		["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+		preset = "default",
 	},
 	appearance = {
 		nerd_font_variant = "mono",
@@ -497,7 +434,6 @@ snacks.setup({
 		},
 	},
 	-- explorer = { enabled = true },
-	indent = { enabled = true },
 	input = { enabled = true },
 	picker = { enabled = true },
 	notifier = { enabled = true },
@@ -564,6 +500,18 @@ require("gitsigns").setup({
 		topdelete = { text = "┃" },
 		changedelete = { text = "┃" },
 		untracked = { text = "┃" },
+	},
+})
+
+-- Markdown
+vim.pack.add({
+	{ src = "https://github.com/OXY2DEV/markview.nvim" },
+})
+
+require("markview").setup({
+	preview = {
+		filetypes = { "markdown", "codecompanion" },
+		ignore_buftypes = {},
 	},
 })
 
@@ -696,3 +644,145 @@ local function open_local_asm()
 end
 
 vim.keymap.set("n", "<leader>ce", open_local_asm, { desc = "Local CE Scratch Buffer" })
+
+-- AI
+vim.pack.add({
+	{ src = "https://github.com/olimorris/codecompanion.nvim" },
+})
+
+require("codecompanion").setup({
+	opts = {
+		log_level = "TRACE",
+	},
+	adapters = {
+		http = {
+			opts = {
+				show_presets = false,
+			},
+			["local"] = function()
+				return require("codecompanion.adapters").extend("ollama", {
+					name = "local_llm",
+					formatted_name = "Locally hosted LLM",
+
+					env = {
+						url = "http://localhost:11434", -- Ollama
+					},
+
+					schema = {
+						model = {
+							default = "qwen3.8",
+						},
+					},
+
+					parameters = {
+						sync = true,
+					},
+				})
+			end,
+		},
+	},
+	strategies = {
+		chat = {
+			adapter = "local",
+			tools = {
+				["get_changed_files"] = {},
+				["read_file"] = {},
+				["grep_search"] = {},
+				["file_search"] = {},
+				["get_diagnostics"] = {},
+			},
+		},
+		inline = {
+			adapter = "local",
+			tools = {
+				["get_changed_files"] = {},
+				["read_file"] = {},
+				["grep_search"] = {},
+				["file_search"] = {},
+				["get_diagnostics"] = {},
+			},
+		},
+	},
+	prompt_library = {
+		["PR Review"] = {
+			strategy = "chat",
+			description = "Review the current Git changes as a pull request",
+			tools = {
+				"get_changed_files",
+				"read_file",
+				"grep_search",
+				"file_search",
+				"get_diagnostics",
+			},
+			opts = {
+				alias = "pr",
+				auto_submit = true,
+				placement = "chat",
+				contains_code = false,
+				collapse_tools = false,
+				ignore_system_prompt = true,
+			},
+			prompts = {
+				{
+					role = "system",
+					content = [[
+You are a meticulous senior software engineer performing a pull request review.
+
+Your job is to review the current Git changes, not to blindly modify them.
+
+Follow this process:
+
+1. Inspect the current Git diff.
+2. Identify the important changed files.
+3. Read relevant surrounding code when necessary.
+4. Search the repository for callers, implementations, tests, and related code.
+5. Propose concrete improvements to the PR.
+6. Critique your own proposal:
+   - Is it actually correct?
+   - Does it introduce regressions?
+   - Are there missing edge cases?
+   - Are there security concerns?
+   - Are the proposed changes unnecessarily broad?
+   - Are tests missing?
+7. Refine the proposal based on the critique.
+8. Repeat the critique/refinement process up to 3 times.
+9. Do not modify files.
+
+Your final response should contain:
+
+## Summary
+Brief description of what the PR does.
+
+## Findings
+List actual problems, ordered by severity.
+
+For each finding include:
+- severity
+- file
+- relevant location
+- explanation
+- recommended change
+
+## Tests
+Tests that should be added or changed.
+
+## Remaining concerns
+Anything that could not be confidently verified.
+
+Do not invent problems merely to have findings. If the PR is good, say so.
+]],
+				},
+				{
+					role = "user",
+					content = [[
+Please review the latest commit.
+                    ]],
+				},
+			},
+		},
+	},
+})
+
+vim.keymap.set("n", "<leader>cc", function()
+	require("codecompanion").toggle({ window_opts = { layout = "float", width = 0.6 } })
+end)
