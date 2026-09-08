@@ -18,9 +18,6 @@ hl.on("hyprland.start", function()
 
 	-- Services
 	hl.exec_cmd("hypridle")
-	hl.exec_cmd(
-		"mpvpaper --auto-pause --fork --mpv-options '--hwdec=vaapi --no-audio --loop-playlist --save-position-on-quit=no --panscan=1' all Pictures/Wallpapers/Live/nier.mp4"
-	)
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("dunst")
 	hl.exec_cmd("systemctl --user start opentabletdriver.service")
@@ -29,7 +26,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("steam --silent")
 	hl.exec_cmd(browser)
 	hl.exec_cmd("discord")
-	hl.exec_cmd("spotify")
+	hl.exec_cmd("spotify-launcher")
 end)
 
 hl.on("hyprland.shutdown", function()
@@ -83,6 +80,7 @@ hl.config({
 	},
 
 	cursor = {
+        no_break_fs_vrr = 1,
 		no_hardware_cursors = 1,
 	},
 

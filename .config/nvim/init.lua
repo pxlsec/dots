@@ -301,7 +301,7 @@ vim.pack.add({
 	{ src = "https://github.com/onsails/lspkind.nvim" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("^1") },
-	{ src = "https://github.com/saghen/blink.indent"},
+	{ src = "https://github.com/saghen/blink.indent" },
 	{ src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("^2") },
 })
 
@@ -375,6 +375,10 @@ require("blink.cmp").setup({
 	snippets = {
 		preset = "luasnip",
 	},
+})
+
+require("blink.indent").setup({
+	scope = { highlights = { "BlinkIndentScope" } },
 })
 
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { noremap = true, silent = true })
@@ -653,6 +657,90 @@ vim.pack.add({
 require("codecompanion").setup({
 	opts = {
 		log_level = "TRACE",
+	},
+	rules = {
+		default = {
+			description = "Collection of common files for all projects",
+			files = {
+				".clinerules",
+				".cursorrules",
+				".goosehints",
+				".rules",
+				".windsurfrules",
+				".github/copilot-instructions.md",
+				"AGENT.md",
+				"AGENTS.md",
+				{ path = "CLAUDE.md", parser = "claude" },
+				{ path = "CLAUDE.local.md", parser = "claude" },
+				{ path = "~/.claude/CLAUDE.md", parser = "claude" },
+			},
+			is_preset = true,
+		},
+		opts = {
+			chat = {
+				autoload = "default",
+				autoload_groups_in_prompt_library = true,
+			},
+		},
+	},
+	interactions = {
+		chat = {
+			tools = {
+				web_search = {
+					name = "search_my_api",
+					description = "Search the local application API",
+
+					schema = {
+						type = "function",
+						["function"] = {
+							name = "search_my_api",
+							description = "Search the application",
+							parameters = {
+								type = "object",
+								properties = {
+									query = {
+										type = "string",
+										description = "Search query",
+									},
+								},
+								required = { "query" },
+							},
+							strict = true,
+						},
+					},
+
+					env = function(self)
+						local api_key = os.getenv("OLLAMA_API_KEY")
+						local query = self.args.query
+
+						return {
+							api_key = api_key,
+							query = query,
+						}
+					end,
+
+					cmds = {
+						{
+							"curl",
+							"https://ollama.com/api/web_search",
+							"--header",
+							"Content-Type: application/json",
+							"--header",
+							"Authorization: Bearer 3ae34b4dcd07441ca2116ac0d6815ab4.7_APDx3FgOec_xqiurVaBWaW",
+							"--data",
+							'{"query":"current vulkan version"}',
+						},
+					},
+
+					handlers = {
+
+						setup = function(self, meta)
+							return vim.notify("setup function called", vim.log.levels.INFO)
+						end,
+					},
+				},
+			},
+		},
 	},
 	adapters = {
 		http = {
