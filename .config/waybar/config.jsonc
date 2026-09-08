@@ -71,7 +71,7 @@
 // last section
     "backlight": {
         "device": "intel_backlight",
-        "format": "{icon} {percent}%",
+        "format": "{icon_exp} {percent_exp}%",
         "format-icons": ["", "󰃞", "󰃠"],
         "scroll-step": 0.5,
         "tooltip": false

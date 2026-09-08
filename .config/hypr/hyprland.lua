@@ -7,6 +7,13 @@ hl.monitor({
 	cm = "dcip3",
 })
 
+hl.monitor({
+	output = "desc:Chimei Innolux Corporation 0x14D3",
+	mode = "preferred",
+	position = "0x0",
+    scale = 1.2,
+})
+
 --- APPS ---
 local browser = "zen-browser"
 local term = "kitty"
@@ -18,6 +25,7 @@ hl.on("hyprland.start", function()
 
 	-- Services
 	hl.exec_cmd("hypridle")
+	hl.exec_cmd("hyprpaper")
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("dunst")
 	hl.exec_cmd("systemctl --user start opentabletdriver.service")
@@ -45,6 +53,7 @@ hl.env("GDK_BACKEND", "wayland,x11,*")
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
 hl.env("SDL_VIDEODRIVER", "wayland")
 hl.env("CLUTTER_BACKEND", "wayland")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "wayland") -- Discord fractal scaling
 
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 
@@ -306,6 +315,9 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl -p 'spotify' play-pause"), {
 hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl -p 'spotify' shuffle 'Toggle'"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl -p 'spotify' previous"), { locked = true })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl -p 'spotify' next"), { locked = true })
+
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e set 5%+"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e set 5%-"), { locked = true, repeating = true })
 
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
