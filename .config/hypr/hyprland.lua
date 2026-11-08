@@ -99,13 +99,13 @@ hl.config({
 
 		border_size = 0,
 
-		allow_tearing = true,
+		allow_tearing = false,
 	},
 
 	decoration = {
 		rounding = 8,
 		blur = {
-			size = 6,
+			size = 5,
 			passes = 3,
 			noise = 0.06,
 			contrast = 0.9,
@@ -113,13 +113,13 @@ hl.config({
 			popups = true,
 		},
 		shadow = {
-			enabled = true,
+			enabled = false,
 			range = 6,
 		},
 	},
 
 	render = {
-		new_render_scheduling = false,
+		new_render_scheduling = true,
 		direct_scanout = 0,
 		cm_auto_hdr = 0,
 	},
