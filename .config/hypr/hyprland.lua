@@ -11,7 +11,7 @@ hl.monitor({
 	output = "desc:Chimei Innolux Corporation 0x14D3",
 	mode = "preferred",
 	position = "0x0",
-    scale = 1.2,
+	scale = 1.2,
 })
 
 --- APPS ---
@@ -65,6 +65,18 @@ hl.env("HYPRCURSOR_THEME", "Vimix-cursors")
 hl.env("GTK_THEME", "Adwaita:dark")
 hl.env("QT_STYLE_OVERRIDE", "adwaita-dark")
 
+-- Proton
+hl.env("PROTON_ENABLE_WAYLAND", "1")
+
+hl.env("PROTON_VKD3D_LOWLATENCY", "1")
+hl.env("VKD3D_FRAME_RATE", "225")
+hl.env("VKD3D_SWAPCHAIN_LATENCY_FRAMES", "1")
+
+hl.env("PROTON_DXVK_LOWLATENCY", "1")
+hl.env("DXVK_FRAME_RATE", "225")
+hl.env("DXVK_FRAME_PACE", "low-latency-vrr-235")
+hl.env("DXVK_CONFIG", "dxvk.maxFrameLatency = 1")
+
 --- STYLE ---
 hl.config({
 	input = {
@@ -89,7 +101,7 @@ hl.config({
 	},
 
 	cursor = {
-        no_break_fs_vrr = 1,
+		no_break_fs_vrr = 1,
 		no_hardware_cursors = 1,
 	},
 
@@ -167,15 +179,16 @@ hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "smooth_out" }
 
 --- WINDOWRULES ---
 
--- hl.window_rule({
--- 	name = "disable xdg dragging",
--- 	match = {
---
--- 		class = ".*",
--- 	},
---
--- 	no_xdg_drags = true,
--- })
+hl.window_rule({
+	name = "disable xdg dragging",
+	match = {
+
+		class = ".*",
+	},
+
+	no_xdg_drags = true,
+    suppress_event = "maximize",
+})
 
 hl.window_rule({
 	-- Fix some dragging issues with XWayland
@@ -257,8 +270,9 @@ hl.window_rule({
 		content = "game",
 	},
 	workspace = "1 silent",
-	immediate = true,
+	immediate = false,
 	idle_inhibit = "focus",
+    render_unfocused = true,
 })
 
 --- LAYERRULES ---
@@ -290,8 +304,8 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + T", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + P", hl.dsp.window.pin())
 
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("pidof hyprlock || hyprlock"))
-hl.bind(mainMod .. " + L", function()
+hl.bind(mainMod .. " + U", hl.dsp.exec_cmd("pidof hyprlock || hyprlock"))
+hl.bind(mainMod .. " + U", function()
 	hl.timer(function()
 		hl.dispatch(hl.dsp.dpms({ action = "disable" }))
 	end, { timeout = 500, type = "oneshot" })
@@ -304,9 +318,9 @@ hl.bind("SHIFT + Print", hl.dsp.exec_cmd("hyprshot -z -o ~/Pictures/Screenshots 
 hl.bind("CONTROL + Print", hl.dsp.exec_cmd("hyprpicker -a -f hex"))
 
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + N", hl.dsp.focus({ direction = "down" }))
-hl.bind(mainMod .. " + E", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + I", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
 
 hl.bind("CONTROL + Up", hl.dsp.send_shortcut({ window = "class:^(discord)$", mods = "CONTROL SHIFT", key = "M" }))
 hl.bind("CONTROL + Down", hl.dsp.send_shortcut({ window = "class:^(discord)$", mods = "CONTROL SHIFT", key = "D" }))

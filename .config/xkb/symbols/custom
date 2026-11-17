@@ -1,7 +1,7 @@
 default partial alphanumeric_keys
 xkb_symbols "custom" {
 
-    include "us(colemak_base)"
+    include "us(intl)"
 
     name[Group1]= "Custom";
 

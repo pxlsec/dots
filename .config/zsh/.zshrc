@@ -61,7 +61,7 @@ alias "nv"="nvim"
 alias "lg"="lazygit"
 alias "ly"="yadm enter lazygit"
 alias "o"="xdg-open"
-alias "Hyprland"="start-hyprland"
+alias "zig"="anyzig"
 
 # <-- Shell integrations -->
 eval "$(zoxide init zsh)"
